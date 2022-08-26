@@ -1,0 +1,9 @@
+// 1.19.2	2022-08-26T12:01:13.135638	Recipes
+d5009d9fa5d7fcd9e213cfad6a0a03b8c67d86d5 data/minecraft/advancements/recipes/openglider.main/reinforced_hang_glider_smithing.json
+d45ff6d95ae02013d3a55069fe87b63e570bf319 data/minecraft/recipes/reinforced_hang_glider_smithing.json
+a098f60646b66218a9e9c8fbaf4d9f1d407c6153 data/openglider/advancements/recipes/openglider.main/glider_framework.json
+07cf03eb7181721d2cae0c8f26410b528f4aa72c data/openglider/advancements/recipes/openglider.main/glider_wing.json
+7728ef4c29692d23ba88c337082a443608f86dbc data/openglider/advancements/recipes/openglider.main/hang_glider.json
+5b8011d77e2a17274be57abd69d5014923389898 data/openglider/recipes/glider_framework.json
+52608dce21433b4ebbb1258ec532584ce9a66e61 data/openglider/recipes/glider_wing.json
+228a68a1fc8e8beff28bf0e344b6d1209337371e data/openglider/recipes/hang_glider.json

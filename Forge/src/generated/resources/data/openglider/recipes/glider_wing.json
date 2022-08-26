@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:leather"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " S#",
+    "S##",
+    "###"
+  ],
+  "result": {
+    "item": "openglider:glider_wing"
+  }
+}

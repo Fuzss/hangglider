@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "minecraft:elytra"
+  },
+  "base": {
+    "item": "openglider:hang_glider"
+  },
+  "result": {
+    "item": "openglider:reinforced_hang_glider"
+  }
+}
