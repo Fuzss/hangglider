@@ -4,13 +4,19 @@ import fuzs.openglider.capability.GlidingPlayerCapability;
 import fuzs.openglider.data.ModItemModelProvider;
 import fuzs.openglider.data.ModLanguageProvider;
 import fuzs.openglider.data.ModRecipeProvider;
+import fuzs.openglider.handler.FlyingHandler;
 import fuzs.openglider.init.ModRegistry;
 import fuzs.puzzleslib.capability.ForgeCapabilityController;
 import fuzs.puzzleslib.core.CoreServices;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
@@ -31,7 +37,16 @@ public class OpenGliderForge {
     }
 
     private static void registerHandlers() {
-
+        FlyingHandler flyingHandler = new FlyingHandler();
+        MinecraftForge.EVENT_BUS.addListener((final EntityJoinLevelEvent evt) -> {
+            flyingHandler.onEntityJoinLevel(evt.getEntity(), evt.getLevel());
+        });
+        MinecraftForge.EVENT_BUS.addListener((final PlayerEvent.StartTracking evt) -> {
+            flyingHandler.onStartTracking(evt.getTarget(), (ServerPlayer) evt.getEntity());
+        });
+        MinecraftForge.EVENT_BUS.addListener((final TickEvent.PlayerTickEvent evt) -> {
+            if (evt.phase == TickEvent.Phase.END) flyingHandler.onPlayerTick(evt.player);
+        });
     }
 
     @SubscribeEvent

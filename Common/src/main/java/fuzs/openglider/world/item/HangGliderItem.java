@@ -1,156 +1,63 @@
 package fuzs.openglider.world.item;
 
-import gr8pefish.openglider.api.helper.GliderHelper;
-import gr8pefish.openglider.common.helper.OpenGliderPlayerHelper;
-import gr8pefish.openglider.common.network.PacketHandler;
-import gr8pefish.openglider.common.network.PacketUpdateClientTarget;
-import gr8pefish.openglider.common.util.OpenGliderHelper;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityTracker;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemElytra;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import com.google.common.base.Suppliers;
+import fuzs.openglider.OpenGlider;
+import fuzs.openglider.api.world.item.Glider;
+import fuzs.openglider.api.world.item.GliderMaterial;
+import fuzs.openglider.helper.GliderHelper;
+import fuzs.openglider.network.S2CUpdateClientTargetMessage;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.World;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Supplier;
 
 public class HangGliderItem extends Item implements Glider {
+    private final Supplier<GliderMaterial> material;
 
-    //ToDo: NBT saving tags of upgrade (need IRecipe for them)
-
-    private double horizSpeed;
-    private double vertSpeed;
-    private double shiftHorizSpeed;
-    private double shiftVertSpeed;
-    private double windMultiplier;
-    private double airResistance;
-    private int totalDurability;
-    private ResourceLocation modelRL;
-
-    public HangGliderItem(double horizSpeed, double vertSpeed, double shiftHorizSpeed, double shiftVertSpeed, double windMultiplier, double airResistance, int totalDurability, ResourceLocation modelRL) {
-        super();
-        this.horizSpeed = horizSpeed;
-        this.vertSpeed = vertSpeed;
-        this.shiftHorizSpeed = shiftHorizSpeed;
-        this.shiftVertSpeed = shiftVertSpeed;
-        this.windMultiplier = windMultiplier;
-        this.airResistance = airResistance;
-        this.totalDurability = totalDurability;
-        this.modelRL = modelRL;
-
-        //Add different icons for if the glider is deployed or not
-        this.addPropertyOverride(new ResourceLocation("status"), new IItemPropertyGetter() {
-
-            @SideOnly(Side.CLIENT)
-            public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
-                return isGlidingGlider(entityIn, stack) ? 1.0F : isBroken(stack) ? 2.0F : 0.0F; //0 = undeployed, 1 = deployed, 2 = broken
-            }
-
-            private boolean isGlidingGlider(@org.jetbrains.annotations.Nullable LivingEntity entityIn, ItemStack stack){
-                return entityIn != null && entityIn instanceof Player player && GliderHelper.getIsGliderDeployed((EntityPlayer)entityIn) && OpenGliderPlayerHelper.getGlider((EntityPlayer)entityIn) == stack;
-            }
-
-        });
-
+    public HangGliderItem(Supplier<GliderMaterial> material, Properties properties) {
+        super(properties);
+        this.material = Suppliers.memoize(material::get);
     }
 
     /**
      * Handles a right click of the item attempting to deploy the hang glider.
      *
-     * @param world - the world this occurs in
+     * @param level - the world this occurs in
      * @param player - the player clicking
-     * @param hand - the hand used
+     * @param usedHand - the hand used
      *
      * @return - an ActionResult of the occurrence
      */
     @Override
-    public InteractionResult<ItemStack> onItemRightClick(Level world, Player player, InteractionHand hand) {
-
-        //ToDo: test enforce mainhand only
-        ItemStack chestItem = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        ItemStack itemStack = player.getHeldItem(hand);
-
-        //if no elytra equipped
-        if (!(chestItem != null && !chestItem.isEmpty() && chestItem.getItem() instanceof ItemElytra)) {
-
-            if (this.isBroken(itemStack)) return ActionResult.newResult(EnumActionResult.PASS, itemStack); //nothing if broken
-            if (!hand.equals(EnumHand.MAIN_HAND)) return ActionResult.newResult(EnumActionResult.PASS, itemStack); //return if not using main hand
-
-            //old deployment state
-            boolean isDeployed = GliderHelper.getIsGliderDeployed(player);
-
-            //toggle state of glider deployment
-            GliderHelper.setIsGliderDeployed(player, !isDeployed);
-
-            //client only
-            if (!world.isRemote) {
-                //send packet to nearby players to update visually
-                EntityTracker tracker = world.getMinecraftServer().getWorld(player.dimension).getEntityTracker();
-                tracker.sendToTracking(player, PacketHandler.HANDLER.getPacketFrom(new PacketUpdateClientTarget(player, GliderHelper.getIsGliderDeployed(player))));
-            }
-
-        } else {
-            if (world.isRemote) { //client
-                player.sendMessage(new TextComponentTranslation("openglider.elytra.error"));
-            }
-        }
-
-        return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
-    }
-
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
         if (chestStack.getItem() instanceof ElytraItem) {
-            // TODO
+            OpenGlider.PROXY.addElytraWidget();
         } else {
+            ItemStack stack = player.getItemInHand(usedHand);
+            if (!this.isBroken(stack)) {
 
-        }
+                //old deployment state
+                boolean isDeployed = GliderHelper.getIsGliderDeployed(player);
 
+                //toggle state of glider deployment
+                GliderHelper.setIsGliderDeployed(player, !isDeployed);
 
+                if (!level.isClientSide) {
+                    OpenGlider.NETWORK.sendToAllTracking(new S2CUpdateClientTargetMessage(player, GliderHelper.getIsGliderDeployed(player)), player);
+                }
 
-        ItemStack itemStack = player.getItemInHand(usedHand);
-        EquipmentSlot equipmentSlot = Mob.getEquipmentSlotForItem(itemStack);
-        ItemStack itemStack2 = player.getItemBySlot(equipmentSlot);
-        if (itemStack2.isEmpty()) {
-            player.setItemSlot(equipmentSlot, itemStack.copy());
-            if (!level.isClientSide()) {
-                player.awardStat(Stats.ITEM_USED.get(this));
+                return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
             }
-
-            itemStack.setCount(0);
-            return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
-        } else {
-            return InteractionResultHolder.fail(itemStack);
         }
+        return InteractionResultHolder.fail(chestStack);
     }
 
     /**
@@ -208,91 +115,8 @@ public class HangGliderItem extends Item implements Glider {
         return repairCandidate.is(Items.LEATHER) || super.isValidRepairItem(stack, repairCandidate);
     }
 
-    //==============================================Glider========================================
-
     @Override
-    public double getHorizontalFlightSpeed() {
-        return this.horizSpeed;
-    }
-
-    @Override
-    public void setHorizontalFlightSpeed(double speed) {
-        this.horizSpeed = speed;
-    }
-
-    @Override
-    public double getVerticalFlightSpeed() {
-        return this.vertSpeed;
-    }
-
-    @Override
-    public void setVerticalFlightSpeed(double speed) {
-        this.vertSpeed = speed;
-    }
-
-    @Override
-    public double getShiftHorizontalFlightSpeed() {
-        return this.shiftHorizSpeed;
-    }
-
-    @Override
-    public void setShiftHorizontalFlightSpeed(double speed) {
-        this.shiftHorizSpeed = speed;
-    }
-
-    @Override
-    public double getShiftVerticalFlightSpeed() {
-        return this.shiftVertSpeed;
-    }
-
-    @Override
-    public void setShiftVerticalFlightSpeed(double speed) {
-        this.shiftVertSpeed = speed;
-    }
-
-    @Override
-    public double getWindMultiplier() {
-        return this.windMultiplier;
-    }
-
-    @Override
-    public void setWindMultiplier(double windMultiplierToSetTo) {
-        this.windMultiplier = windMultiplierToSetTo;
-    }
-
-    @Override
-    public double getAirResistance() {
-        return this.airResistance;
-    }
-
-    @Override
-    public void setAirResistance(double airResistanceToSetTo) {
-        this.airResistance = airResistanceToSetTo;
-    }
-
-    @Override
-    public int getTotalDurability() {
-        return this.totalDurability;
-    }
-
-    @Override
-    public void setTotalDurability(int durability) {
-        this.totalDurability = durability;
-    }
-
-    @Override
-    public int getCurrentDurability(ItemStack stack) {
-        return stack.getDamageValue();
-    }
-
-    @Override
-    public void setCurrentDurability(ItemStack stack, int durability) {
-        stack.setDamageValue(durability);
-        if (stack.getDamageValue() < 1)
-            stack.setDamageValue(1);
-    }
-    @Override
-    public boolean isBroken(ItemStack stack) {
-        return stack.getDamageValue() >= stack.getMaxDamage() - 1;
+    public GliderMaterial getMaterial(ItemStack stack) {
+        return this.material.get();
     }
 }

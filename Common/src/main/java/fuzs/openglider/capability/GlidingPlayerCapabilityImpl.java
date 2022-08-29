@@ -1,13 +1,18 @@
 package fuzs.openglider.capability;
 
 import fuzs.openglider.OpenGlider;
+import fuzs.openglider.network.S2CSyncGliderDataMessage;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
 public class GlidingPlayerCapabilityImpl implements GlidingPlayerCapability {
+    private final Player holder;
     private boolean gliding;
     private boolean gliderDeployed;
 
-    public GlidingPlayerCapabilityImpl() {
+    public GlidingPlayerCapabilityImpl(Player holder) {
+        this.holder = holder;
         this.gliding = false;
         this.gliderDeployed = false;
     }
@@ -22,7 +27,9 @@ public class GlidingPlayerCapabilityImpl implements GlidingPlayerCapability {
         if (!this.gliderDeployed && isGliding) {
             OpenGlider.LOGGER.error("Can't set a player to be gliding if they don't have a deployed glider!");
         } else {
+            if (isGliding && !this.gliding) OpenGlider.PROXY.afterPlayerStartGliding();
             this.gliding = isGliding;
+            this.syncToLocalHolder();
         }
     }
 
@@ -37,9 +44,10 @@ public class GlidingPlayerCapabilityImpl implements GlidingPlayerCapability {
             OpenGlider.LOGGER.error("Player is already flying, deploying now is not needed.");
         } else {
             this.gliderDeployed = isDeployed;
-        }
-        if (!isDeployed) {
-            this.gliding = false; //if not deployed, cannot be flying either
+            if (!isDeployed) {
+                this.gliding = false; //if not deployed, cannot be flying either
+            }
+            this.syncToLocalHolder();
         }
     }
 
@@ -53,5 +61,14 @@ public class GlidingPlayerCapabilityImpl implements GlidingPlayerCapability {
     public void read(CompoundTag tag) {
         this.gliding = tag.getBoolean("Gliding");
         this.gliderDeployed = tag.getBoolean("GliderDeployed");
+    }
+
+    @Override
+    public void syncToLocalHolder() {
+        if (this.holder instanceof ServerPlayer serverPlayer) {
+            CompoundTag tag = new CompoundTag();
+            this.write(tag);
+            OpenGlider.NETWORK.sendTo(new S2CSyncGliderDataMessage(tag), serverPlayer);
+        }
     }
 }

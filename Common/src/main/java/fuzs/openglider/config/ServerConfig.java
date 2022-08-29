@@ -1,5 +1,6 @@
 package fuzs.openglider.config;
 
+import fuzs.openglider.api.world.item.GliderMaterial;
 import fuzs.puzzleslib.config.ConfigCore;
 import fuzs.puzzleslib.config.annotation.Config;
 
@@ -18,7 +19,7 @@ public class ServerConfig implements ConfigCore {
         this.reinforcedHangGlider.airResistance = 0.99;
     }
 
-    public static class GliderConfig implements ConfigCore {
+    public static class GliderConfig implements ConfigCore, GliderMaterial {
         @Config(name = "normal_forward_movement", description = "The amount of blocks to move forwards (per-tick) while gliding normally.")
         @Config.DoubleRange(min = 0.0, max = 100.0)
         public double horizSpeed = 0.025;
@@ -39,12 +40,49 @@ public class ServerConfig implements ConfigCore {
         public double airResistance = 0.985;
         @Config(description = "Enables durability usage of the hang glider when gliding.")
         public boolean consumeDurability = true;
-        @Config(description = "The durability used up each time.")
-        @Config.IntRange(min = 0, max = 10_000)
-        public int durabilityPerUse = 1;
         @Config(description = {"The timeframe for durability usage, in ticks. Recall that there are 20 ticks in a second, so a value of 20 would damage the item about once a second.", "Default is 1 damage about every 10 seconds of flight, so with a durability of 618 means about 15 minutes of flight time with an undamaged glider."})
         @Config.IntRange(min = 1, max = 10_000)
-        public int durabilityTimeframe = 200;
+        public int durabilityUseInterval = 200;
+
+        @Override
+        public double getHorizontalFlightSpeed() {
+            return this.horizSpeed;
+        }
+
+        @Override
+        public double getVerticalFlightSpeed() {
+            return this.vertSpeed;
+        }
+
+        @Override
+        public double getShiftHorizontalFlightSpeed() {
+            return this.shiftHorizSpeed;
+        }
+
+        @Override
+        public double getShiftVerticalFlightSpeed() {
+            return this.shiftVertSpeed;
+        }
+
+        @Override
+        public double getWindMultiplier() {
+            return this.windModifier;
+        }
+
+        @Override
+        public double getAirResistance() {
+            return this.airResistance;
+        }
+
+        @Override
+        public boolean consumesDurability() {
+            return this.consumeDurability;
+        }
+
+        @Override
+        public int getDurabilityUseInterval() {
+            return this.durabilityUseInterval;
+        }
     }
 
     public static class WindConfig implements ConfigCore {
@@ -73,7 +111,5 @@ public class ServerConfig implements ConfigCore {
         @Config(description = "The glider's durability remaining changes the overall wind effect by this additional amount. 0 means the glider's durability won't effect the wind power, whereas 1 will mean a nearly broken glider is affected by wind about twice as much as a new one.")
         @Config.DoubleRange(min = 0.0, max = 5.0)
         public double durabilityMultiplier = 0.7;
-        @Config(description = {"Allows gliders to rise when gliding over hot blocks (e.g. lava).", "Experimental, so disabled by default for now."})
-        public boolean heatUpdraft = false;
     }
 }

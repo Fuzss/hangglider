@@ -16,8 +16,8 @@ public class S2CUpdateClientTargetMessage implements Message<S2CUpdateClientTarg
 
     }
 
-    public S2CUpdateClientTargetMessage(int targetEntityID, boolean isGliding) {
-        this.targetEntityID = targetEntityID;
+    public S2CUpdateClientTargetMessage(Player targetEntity, boolean isGliding) {
+        this.targetEntityID = targetEntity.getId();
         this.isGliding = isGliding;
     }
 
@@ -40,8 +40,7 @@ public class S2CUpdateClientTargetMessage implements Message<S2CUpdateClientTarg
             @Override
             public void handle(S2CUpdateClientTargetMessage message, Player player, Object gameInstance) {
                 Level level = ((Minecraft) gameInstance).level;
-                Entity target = level.getEntityByID(message.targetEntityID);
-                if (target instanceof Player player1) {
+                if (level.getEntity(message.targetEntityID) instanceof Player player1) {
                     GliderHelper.setIsGliderDeployed(player1, message.isGliding);
                 }
             }

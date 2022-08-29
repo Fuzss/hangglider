@@ -3,7 +3,7 @@ package fuzs.openglider.wind;
 import fuzs.openglider.OpenGlider;
 import fuzs.openglider.config.ServerConfig;
 import fuzs.openglider.wind.generator.OpenSimplexNoise;
-import fuzs.openglider.world.item.Glider;
+import fuzs.openglider.api.world.item.Glider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 

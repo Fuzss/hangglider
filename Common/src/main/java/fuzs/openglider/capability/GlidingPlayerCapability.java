@@ -39,4 +39,6 @@ public interface GlidingPlayerCapability extends CapabilityComponent {
      * @param isGliderDeployed - True if the glider is deployed, False otherwise.
      */
     void setIsGliderDeployed(boolean isGliderDeployed);
+
+    void syncToLocalHolder();
 }

@@ -3,17 +3,13 @@ package fuzs.openglider.helper;
 import fuzs.openglider.OpenGlider;
 import fuzs.openglider.capability.GlidingPlayerCapability;
 import fuzs.openglider.init.ModRegistry;
-import fuzs.openglider.world.item.Glider;
+import fuzs.openglider.api.world.item.Glider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
 public class GliderHelper {
-
-
-    //ToDo: getIGlider/setIGlider
-    //return itemstack or IGlider?
 
     /**
      * Get the gliderBasic used, contains all the stats/modifiers of it.
