@@ -1,6 +1,6 @@
 package fuzs.openglider.config;
 
-import fuzs.openglider.api.world.item.GliderMaterial;
+import fuzs.openglider.world.item.GliderMaterial;
 import fuzs.puzzleslib.config.ConfigCore;
 import fuzs.puzzleslib.config.annotation.Config;
 
@@ -87,9 +87,9 @@ public class ServerConfig implements ConfigCore {
 
     public static class WindConfig implements ConfigCore {
         @Config(description = "Enables air resistance, making the player slow down over time when flying. Values conditional on tier of glider.")
-        public boolean airResistance = true;
+        public boolean allowAirResistance = true;
         @Config(description = "Enables wind, making the player move unpredictably around when gliding.")
-        public boolean wind = true;
+        public boolean allowWind = true;
         @Config(description = "A quality-of-life option to quickly change the overall power of the wind effect for all gliders. Default is an overall relatively weak wind, with moderate gusts that occur semi-commonly. Note that this value can be a decimal (i.e. 0.5 would be half as strong). More fine-grained options are available below.")
         @Config.DoubleRange(min = 0.001, max = 10.0)
         public double overallPower = 1.0;

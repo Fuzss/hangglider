@@ -1,6 +1,7 @@
 package fuzs.openglider.capability;
 
 import fuzs.puzzleslib.capability.data.CapabilityComponent;
+import fuzs.puzzleslib.capability.data.SyncedCapabilityComponent;
 
 /**
  * This interface defines the contract to deal with the gliding status of a player.
@@ -8,7 +9,7 @@ import fuzs.puzzleslib.capability.data.CapabilityComponent;
  *
  * <p>It should only ever be present on players.
  */
-public interface GlidingPlayerCapability extends CapabilityComponent {
+public interface GlidingPlayerCapability extends SyncedCapabilityComponent {
 
     /**
      * Get the current gliding status of the player.
@@ -39,6 +40,4 @@ public interface GlidingPlayerCapability extends CapabilityComponent {
      * @param isGliderDeployed - True if the glider is deployed, False otherwise.
      */
     void setIsGliderDeployed(boolean isGliderDeployed);
-
-    void syncToLocalHolder();
 }

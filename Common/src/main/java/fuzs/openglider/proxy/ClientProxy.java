@@ -8,8 +8,7 @@ public class ClientProxy extends ServerProxy {
 
     @Override
     public void afterPlayerStartGliding() {
-        Proxy proxy = Proxy.INSTANCE;
-        ((Minecraft) proxy.getClientInstance()).getSoundManager().play(new PlayerGlidingSoundInstance(proxy.getClientPlayer()));
+        ((Minecraft) Proxy.INSTANCE.getClientInstance()).getSoundManager().play(new PlayerGlidingSoundInstance(Proxy.INSTANCE.getClientPlayer()));
     }
 
     @Override

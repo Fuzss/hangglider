@@ -1,45 +1,36 @@
 package fuzs.openglider.api.world.item;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 
 public interface Glider {
 
-    GliderMaterial getMaterial(ItemStack stack);
-
     //==============Flight==================
 
     //Blocks traveled horizontally per movement time.
-    default double getHorizontalFlightSpeed(ItemStack stack) {
-        return this.getMaterial(stack).getHorizontalFlightSpeed();
-    }
+    double getHorizontalFlightSpeed(ItemStack stack);
 
     default void setHorizontalFlightSpeed(ItemStack stack, double speed) {
 
     }
 
     //Blocks traveled vertically per movement time.
-    default double getVerticalFlightSpeed(ItemStack stack) {
-        return this.getMaterial(stack).getVerticalFlightSpeed();
-    }
+    double getVerticalFlightSpeed(ItemStack stack);
 
     default void setVerticalFlightSpeed(ItemStack stack, double speed) {
 
     }
 
     //Blocks traveled horizontally per movement time when going fast/pressing shift.
-    default double getShiftHorizontalFlightSpeed(ItemStack stack) {
-        return this.getMaterial(stack).getShiftHorizontalFlightSpeed();
-    }
+    double getShiftHorizontalFlightSpeed(ItemStack stack);
 
     default void setShiftHorizontalFlightSpeed(ItemStack stack, double speed) {
 
     }
 
     //Blocks traveled vertically per movement time when going fast/pressing shift.
-    default double getShiftVerticalFlightSpeed(ItemStack stack) {
-        return this.getMaterial(stack).getShiftVerticalFlightSpeed();
-    }
+    double getShiftVerticalFlightSpeed(ItemStack stack);
 
     default void setShiftVerticalFlightSpeed(ItemStack stack, double speed) {
 
@@ -47,17 +38,13 @@ public interface Glider {
 
     //===============Wind====================
 
-    default double getWindMultiplier(ItemStack stack) {
-        return this.getMaterial(stack).getWindMultiplier();
-    }
+    double getWindMultiplier(ItemStack stack);
 
     default void setWindMultiplier(ItemStack stack, double windMultiplier) {
 
     }
 
-    default double getAirResistance(ItemStack stack) {
-        return this.getMaterial(stack).getAirResistance();
-    }
+    double getAirResistance(ItemStack stack);
 
     default void setAirResistance(ItemStack stack, double airResistance) {
 
@@ -66,15 +53,15 @@ public interface Glider {
     //=============Durability================
 
 
-    default boolean consumesDurability(ItemStack stack) {
-        return this.getMaterial(stack).consumesDurability();
-    }
+    boolean consumesDurability(ItemStack stack);
 
-    default int getDurabilityUseInterval(ItemStack stack) {
-        return this.getMaterial(stack).getDurabilityUseInterval();
-    }
+    int getDurabilityUseInterval(ItemStack stack);
 
     default boolean isBroken(ItemStack stack) {
         return !ElytraItem.isFlyEnabled(stack);
     }
+
+    //=============Client================
+
+    ResourceLocation getGliderTexture(ItemStack stack);
 }

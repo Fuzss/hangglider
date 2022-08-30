@@ -22,9 +22,10 @@ public class ModRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(ModRegistry.GLIDER_WING_ITEM.get())
                 .define('S', Items.STICK)
                 .define('#', Items.LEATHER)
-                .pattern(" S#")
-                .pattern("S##")
-                .pattern("###")
+                .define('P', Items.PHANTOM_MEMBRANE)
+                .pattern(" SP")
+                .pattern("SP#")
+                .pattern("P##")
                 .unlockedBy("has_leather", has(Items.LEATHER))
                 .save(p_176532_);
         ShapedRecipeBuilder.shaped(ModRegistry.GLIDER_FRAMEWORK_ITEM.get())

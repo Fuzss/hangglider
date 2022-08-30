@@ -21,6 +21,7 @@ public class PlayerGlidingSoundInstance extends AbstractTickableSoundInstance {
       this.volume = 0.1F;
    }
 
+   @Override
    public void tick() {
       ++this.time;
       if (!this.player.isRemoved() && (this.time <= 20 || ModRegistry.GLIDING_PLAYER_CAPABILITY.maybeGet(this.player)

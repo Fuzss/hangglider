@@ -14,12 +14,7 @@ import net.minecraft.world.item.ItemStack;
 public class WindHelper {
 
     /** Simplex noise has a better "game feel" than Perlin (the standard for Minecraft), so ti is used here. */
-    public static OpenSimplexNoise noiseGenerator;
-
-    /** Initialize noise generator once and store in a static variable for performance. */
-    public static void initNoiseGenerator() {
-        noiseGenerator = new OpenSimplexNoise();
-    }
+    private static final OpenSimplexNoise NOISE_GENERATOR = new OpenSimplexNoise();
 
     /**
      * Apply wind effect, buffeting them around pseudo-randomly.
@@ -31,7 +26,7 @@ public class WindHelper {
     public static void applyWind(Player player, ItemStack glider) {
         ServerConfig config = OpenGlider.CONFIG.get(ServerConfig.class);
 
-        if (!config.wind.wind) return; //if no wind, then do nothing
+        if (!config.wind.allowWind) return; //if no wind, then do nothing
 
         double windGustSize = config.wind.gustSize; //18;
         double windFrequency = config.wind.frequency; //0.15;
@@ -41,7 +36,7 @@ public class WindHelper {
         double windOverallPower = config.wind.overallPower; //1;
 
         //downscale for gust size/occurrence amount
-        double noise = WindHelper.noiseGenerator.eval(player.getX() / windGustSize, player.getZ() / windGustSize); //occurrence amount
+        double noise = WindHelper.NOISE_GENERATOR.eval(player.getX() / windGustSize, player.getZ() / windGustSize); //occurrence amount
 
         //multiply by intensity factor (alter by multiplier if raining)
         noise *= player.level.isRaining() ? windRainingMultiplier * windFrequency : windFrequency;
@@ -64,10 +59,9 @@ public class WindHelper {
         wind *= windOverallPower;
 
         //apply tier specific wind power multiplier
-        wind *= ((Glider) glider.getItem()).getWindMultiplier();
+        wind *= ((Glider) glider.getItem()).getWindMultiplier(glider);
 
         //apply final rotation based on all the above
         player.setYRot((float) (player.getYRot() + wind));
     }
-
 }

@@ -4,12 +4,14 @@ import fuzs.openglider.OpenGlider;
 import fuzs.openglider.capability.GlidingPlayerCapability;
 import fuzs.openglider.init.ModRegistry;
 import fuzs.openglider.api.world.item.Glider;
+import fuzs.puzzleslib.capability.data.PlayerCapabilityKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
-public class GliderHelper {
+public class GliderCapabilityHelper {
 
     /**
      * Get the gliderBasic used, contains all the stats/modifiers of it.
@@ -23,16 +25,13 @@ public class GliderHelper {
         return ModRegistry.GLIDING_PLAYER_CAPABILITY.maybeGet(player).map(capability -> {
 
             if (capability.getIsGliderDeployed()) {
-
-                //if player holding a gliderBasic
-                if (player.getMainHandItem().getItem() instanceof Glider) {
-
-                    //return that held gliderBasic
-                    return player.getMainHandItem();
-                }
+                return PlayerGlidingHelper.getGliderInHand(player);
             }
+
             OpenGlider.LOGGER.error("Cannot get gliderBasic used, gliderBasic capability not present.");
+
             return ItemStack.EMPTY;
+
         }).orElse(ItemStack.EMPTY);
     }
 
@@ -56,9 +55,13 @@ public class GliderHelper {
      * @param isGliding - the gliding state to set
      */
     public static void setIsPlayerGliding(Player player, boolean isGliding) {
-        Optional<GlidingPlayerCapability> cap = ModRegistry.GLIDING_PLAYER_CAPABILITY.maybeGet(player);
-        if (cap.isPresent()) {
-            cap.get().setIsPlayerGliding(isGliding);
+        PlayerCapabilityKey<GlidingPlayerCapability> capability = ModRegistry.GLIDING_PLAYER_CAPABILITY;
+        Optional<GlidingPlayerCapability> optional = capability.maybeGet(player);
+        if (optional.isPresent()) {
+            optional.get().setIsPlayerGliding(isGliding);
+            if (player instanceof ServerPlayer serverPlayer) {
+                capability.syncToRemote(serverPlayer);
+            }
         } else {
             OpenGlider.LOGGER.error("Cannot set player gliding, gliderBasic capability not present.");
         }
@@ -87,9 +90,13 @@ public class GliderHelper {
      * @param isDeployed - the gliderBasic deployment state to set
      */
     public static void setIsGliderDeployed(Player player, boolean isDeployed) {
-        Optional<GlidingPlayerCapability> cap = ModRegistry.GLIDING_PLAYER_CAPABILITY.maybeGet(player);
-        if (cap.isPresent()) {
-            cap.get().setIsGliderDeployed(isDeployed);
+        PlayerCapabilityKey<GlidingPlayerCapability> capability = ModRegistry.GLIDING_PLAYER_CAPABILITY;
+        Optional<GlidingPlayerCapability> optional = capability.maybeGet(player);
+        if (optional.isPresent()) {
+            optional.get().setIsGliderDeployed(isDeployed);
+            if (player instanceof ServerPlayer serverPlayer) {
+                capability.syncToRemote(serverPlayer);
+            }
         } else {
             OpenGlider.LOGGER.error("Cannot set gliderBasic deployed, gliderBasic capability not present.");
         }

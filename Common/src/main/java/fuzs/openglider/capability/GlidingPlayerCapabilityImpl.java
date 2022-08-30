@@ -1,20 +1,31 @@
 package fuzs.openglider.capability;
 
 import fuzs.openglider.OpenGlider;
-import fuzs.openglider.network.S2CSyncGliderDataMessage;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 public class GlidingPlayerCapabilityImpl implements GlidingPlayerCapability {
-    private final Player holder;
+    private boolean dirty;
     private boolean gliding;
     private boolean gliderDeployed;
 
-    public GlidingPlayerCapabilityImpl(Player holder) {
-        this.holder = holder;
+    public GlidingPlayerCapabilityImpl() {
         this.gliding = false;
         this.gliderDeployed = false;
+    }
+
+    @Override
+    public boolean isDirty() {
+        return this.dirty;
+    }
+
+    @Override
+    public void markDirty() {
+        this.dirty = true;
+    }
+
+    @Override
+    public void markClean() {
+        this.dirty = false;
     }
 
     @Override
@@ -29,7 +40,7 @@ public class GlidingPlayerCapabilityImpl implements GlidingPlayerCapability {
         } else {
             if (isGliding && !this.gliding) OpenGlider.PROXY.afterPlayerStartGliding();
             this.gliding = isGliding;
-            this.syncToLocalHolder();
+            this.markDirty();
         }
     }
 
@@ -47,7 +58,7 @@ public class GlidingPlayerCapabilityImpl implements GlidingPlayerCapability {
             if (!isDeployed) {
                 this.gliding = false; //if not deployed, cannot be flying either
             }
-            this.syncToLocalHolder();
+            this.markDirty();
         }
     }
 
@@ -63,12 +74,4 @@ public class GlidingPlayerCapabilityImpl implements GlidingPlayerCapability {
         this.gliderDeployed = tag.getBoolean("GliderDeployed");
     }
 
-    @Override
-    public void syncToLocalHolder() {
-        if (this.holder instanceof ServerPlayer serverPlayer) {
-            CompoundTag tag = new CompoundTag();
-            this.write(tag);
-            OpenGlider.NETWORK.sendTo(new S2CSyncGliderDataMessage(tag), serverPlayer);
-        }
-    }
 }

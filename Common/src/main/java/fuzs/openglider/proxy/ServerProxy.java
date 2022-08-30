@@ -1,6 +1,6 @@
 package fuzs.openglider.proxy;
 
-public class ServerProxy implements CommonProxy {
+public class ServerProxy implements Proxy {
 
     @Override
     public void afterPlayerStartGliding() {

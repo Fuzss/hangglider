@@ -1,4 +1,4 @@
-package fuzs.openglider.api.world.item;
+package fuzs.openglider.world.item;
 
 public interface GliderMaterial {
 
