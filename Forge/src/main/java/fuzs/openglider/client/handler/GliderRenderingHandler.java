@@ -16,6 +16,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -32,6 +33,22 @@ public class GliderRenderingHandler {
     public static void onRenderPlayer$pre(final RenderPlayerEvent.Pre evt) {
         if (GliderCapabilityHelper.getIsGliderDeployed(evt.getEntity())) { //if gliderBasic deployed
             if (!PlayerGlidingHelper.isAllowedToGlide(evt.getEntity())) return; //don't continue if player is not flying
+
+//            evt.getPoseStack().mulPose(Vector3f.XP.rotationDegrees(1.0F * (-90.0F - evt.getEntity().getXRot())));
+//
+//            Player pEntityLiving = evt.getEntity();
+//            Vec3 vec3 = pEntityLiving.getViewVector(evt.getPartialTick());
+//            Vec3 vec31 = pEntityLiving.getDeltaMovement();
+//            double d0 = vec31.horizontalDistanceSqr();
+//            double d1 = vec3.horizontalDistanceSqr();
+//            if (d0 > 0.0D && d1 > 0.0D) {
+//                double d2 = (vec31.x * vec3.x + vec31.z * vec3.z) / Math.sqrt(d0 * d1);
+//                double d3 = vec31.x * vec3.z - vec31.z * vec3.x;
+//                evt.getPoseStack().mulPose(Vector3f.YP.rotation((float)(Math.signum(d3) * Math.acos(d2))));
+//            }
+//
+            if (true) return;
+
             if (Minecraft.getInstance().screen instanceof InventoryScreen) return; //don't rotate if the player rendered is in an inventory
             rotateToHorizontal(evt.getPoseStack(), evt.getPartialTick(), evt.getEntity()); //rotate player to flying position
                 needToPop = true; //mark the matrix to pop
@@ -74,16 +91,16 @@ public class GliderRenderingHandler {
      * For rendering as a perspective projection in-world, as opposed to the slightly odd looking orthogonal projection above
      */
     public static void onRenderLevelStage(final RenderLevelStageEvent evt) {
-//        if (!OpenGlider.CONFIG.get(ClientConfig.class).firstPersonRendering) return;
-//        // rendering enabled and first person perspective
-//        if (!Minecraft.getInstance().options.getCameraType().isFirstPerson()) return;
-//        if (evt.getStage() != RenderLevelStageEvent.Stage.AFTER_WEATHER) return;
-//        Player player = Minecraft.getInstance().player;
-//        if (GliderCapabilityHelper.getIsGliderDeployed(player)) { //if gliderBasic deployed
-//            if (PlayerGlidingHelper.isAllowedToGlide(player)) { //if flying
-//                renderGliderFirstPersonPerspective(evt.getPoseStack(), evt.getPartialTick(), player); //render hang gliderBasic above head
-//            }
-//        }
+        if (!OpenGlider.CONFIG.get(ClientConfig.class).firstPersonRendering) return;
+        // rendering enabled and first person perspective
+        if (!Minecraft.getInstance().options.getCameraType().isFirstPerson()) return;
+        if (evt.getStage() != RenderLevelStageEvent.Stage.AFTER_WEATHER) return;
+        Player player = Minecraft.getInstance().player;
+        if (GliderCapabilityHelper.getIsGliderDeployed(player)) { //if gliderBasic deployed
+            if (PlayerGlidingHelper.isAllowedToGlide(player)) { //if flying
+                renderGliderFirstPersonPerspective(evt.getPoseStack(), evt.getPartialTick(), player); //render hang gliderBasic above head
+            }
+        }
     }
 
     /**

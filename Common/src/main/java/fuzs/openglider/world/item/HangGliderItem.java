@@ -42,11 +42,14 @@ public class HangGliderItem extends Item implements Glider {
      */
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-        if (chestStack.getItem() instanceof ElytraItem) {
+
+        ItemStack stack = player.getItemInHand(usedHand);
+
+        if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ElytraItem) {
+
             OpenGlider.PROXY.addElytraWidget();
         } else {
-            ItemStack stack = player.getItemInHand(usedHand);
+
             if (!this.isBroken(stack)) {
 
                 //old deployment state
@@ -58,7 +61,7 @@ public class HangGliderItem extends Item implements Glider {
                 return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
             }
         }
-        return InteractionResultHolder.fail(chestStack);
+        return InteractionResultHolder.fail(stack);
     }
 
     /**

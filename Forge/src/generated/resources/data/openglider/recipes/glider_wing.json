@@ -4,14 +4,17 @@
     "#": {
       "item": "minecraft:leather"
     },
+    "P": {
+      "item": "minecraft:phantom_membrane"
+    },
     "S": {
       "item": "minecraft:stick"
     }
   },
   "pattern": [
-    " S#",
-    "S##",
-    "###"
+    " SP",
+    "SP#",
+    "P##"
   ],
   "result": {
     "item": "openglider:glider_wing"

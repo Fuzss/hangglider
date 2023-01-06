@@ -80,7 +80,7 @@ public final class PlayerGlidingHandler {
     private static void handleClientAnimations(Player player) {
         //no wild arm swinging while flying
         if (player.level.isClientSide) {
-            player.animationSpeed = player.animationSpeedOld = 0.0F;
+            player.animationSpeed = 0.0F;
             player.animationPosition = 0.0F;
         }
     }

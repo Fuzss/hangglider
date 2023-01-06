@@ -46,13 +46,14 @@ public class GliderLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 
                 // set rotation angles of the glider
                 this.getParentModel().copyPropertiesTo(this.gliderModel);
-                this.setRotationAngles(poseStack, player);
+//                this.setRotationAngles(poseStack, player);
 
                 // get texture and render the glider
                 ItemStack stack = GliderCapabilityHelper.getGlider(player);
                 ResourceLocation gliderTexture = ((Glider) stack.getItem()).getGliderTexture(stack);
                 VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(gliderTexture), false, stack.hasFoil());
-                this.gliderModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                // always render with full brightness
+                this.gliderModel.renderToBuffer(poseStack, vertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
                 poseStack.popPose();
             }
@@ -65,7 +66,6 @@ public class GliderLayer<T extends LivingEntity, M extends EntityModel<T>> exten
         poseStack.mulPose(Vector3f.YP.rotation(180.0F));
         //on same plane as player
         poseStack.mulPose(Vector3f.XP.rotation(90.0F));
-        Util.make(Vector3f.YP.copy(), v -> v.mul(2.0F));
         //front facing
         poseStack.mulPose(Util.make(Vector3f.YP.copy(), v -> v.mul(2.0F)).rotation(180.0F));
         if (player.isShiftKeyDown()) {

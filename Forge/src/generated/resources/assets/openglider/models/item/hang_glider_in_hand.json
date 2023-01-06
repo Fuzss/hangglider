@@ -1,0 +1,10 @@
+{
+  "overrides": [
+    {
+      "model": "openglider:item/hang_glider_gliding",
+      "predicate": {
+        "openglider:deployed": 1.0
+      }
+    }
+  ]
+}

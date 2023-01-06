@@ -24,7 +24,7 @@ public class GliderModel<T extends LivingEntity> extends AgeableListModel<T> {
     public static LayerDefinition createLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
-        partdefinition.addOrReplaceChild(GLIDER, CubeListBuilder.create().texOffs(0, 0).addBox(-32.0F, -32.0F, 6.0F, 64.0F, 32.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+        partdefinition.addOrReplaceChild(GLIDER, CubeListBuilder.create().texOffs(0, 0).addBox(-32.0F, -32.0F, 6.0F, 64.0F, 32.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
         return LayerDefinition.create(meshdefinition, 128, 64);
     }
 

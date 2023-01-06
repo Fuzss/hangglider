@@ -20,12 +20,12 @@ public class OpenGliderForgeClient {
     }
 
     private static void registerHandlers() {
-        MinecraftForge.EVENT_BUS.addListener((final RenderHandEvent evt) -> {
-            GliderRenderingHandler.onRenderHand(evt.getHand(), evt.getPoseStack(), evt.getMultiBufferSource(), evt.getPackedLight(), evt.getPartialTick(), evt.getInterpolatedPitch(), evt.getSwingProgress(), evt.getEquipProgress(), evt.getItemStack()).ifPresent(unit -> evt.setCanceled(true));
-        });
+//        MinecraftForge.EVENT_BUS.addListener((final RenderHandEvent evt) -> {
+//            GliderRenderingHandler.onRenderHand(evt.getHand(), evt.getPoseStack(), evt.getMultiBufferSource(), evt.getPackedLight(), evt.getPartialTick(), evt.getInterpolatedPitch(), evt.getSwingProgress(), evt.getEquipProgress(), evt.getItemStack()).ifPresent(unit -> evt.setCanceled(true));
+//        });
         MinecraftForge.EVENT_BUS.addListener(GliderRenderingHandler::onRenderPlayer$pre);
-        MinecraftForge.EVENT_BUS.addListener(GliderRenderingHandler::onRenderPlayer$post);
-        MinecraftForge.EVENT_BUS.addListener(GliderRenderingHandler::onRenderLevelStage);
+//        MinecraftForge.EVENT_BUS.addListener(GliderRenderingHandler::onRenderPlayer$post);
+//        MinecraftForge.EVENT_BUS.addListener(GliderRenderingHandler::onRenderLevelStage);
         MinecraftForge.EVENT_BUS.addListener(GliderRenderingHandler::onMouseScrolling);
     }
 }

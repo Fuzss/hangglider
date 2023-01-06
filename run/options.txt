@@ -11,7 +11,7 @@ discrete_mouse_scroll:false
 invertYMouse:false
 realmsNotifications:true
 reducedDebugInfo:false
-showSubtitles:false
+showSubtitles:true
 directionalAudio:false
 touchscreen:false
 fullscreen:false
@@ -37,7 +37,7 @@ ao:2
 prioritizeChunkUpdates:0
 biomeBlendRadius:2
 renderClouds:"true"
-resourcePacks:[]
+resourcePacks:["vanilla","Fabric Mods","file/pack"]
 incompatibleResourcePacks:[]
 lastServer:
 lang:en_us
@@ -48,7 +48,7 @@ chatLineSpacing:0.0
 textBackgroundOpacity:0.5
 backgroundForChatOnly:true
 hideServerAddress:false
-advancedItemTooltips:false
+advancedItemTooltips:true
 pauseOnLostFocus:true
 overrideWidth:0
 overrideHeight:0
@@ -75,7 +75,7 @@ hideBundleTutorial:false
 syncChunkWrites:false
 showAutosaveIndicator:true
 allowServerListing:true
-chatPreview:1
+chatPreview:2
 onlyShowSecureChat:false
 key_key.attack:key.mouse.left
 key_key.use:key.mouse.right
@@ -111,10 +111,11 @@ key_key.hotbar.6:key.keyboard.6
 key_key.hotbar.7:key.keyboard.7
 key_key.hotbar.8:key.keyboard.8
 key_key.hotbar.9:key.keyboard.9
-soundCategory_master:0.102649
+key_key.modmenu.open_menu:key.keyboard.unknown
+soundCategory_master:0.5330802
 soundCategory_music:0.0
 soundCategory_record:1.0
-soundCategory_weather:0.056338027
+soundCategory_weather:1.0
 soundCategory_block:1.0
 soundCategory_hostile:1.0
 soundCategory_neutral:1.0
