@@ -7,7 +7,7 @@ import fuzs.openglider.data.ModRecipeProvider;
 import fuzs.openglider.handler.PlayerGlidingHandler;
 import fuzs.openglider.init.ModRegistry;
 import fuzs.puzzleslib.capability.ForgeCapabilityController;
-import fuzs.puzzleslib.core.CoreServices;
+import fuzs.puzzleslib.core.CommonFactories;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -24,7 +24,7 @@ public class OpenGliderForge {
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
-        CoreServices.FACTORIES.modConstructor(OpenGlider.MOD_ID).accept(new OpenGlider());
+        CommonFactories.INSTANCE.modConstructor(OpenGlider.MOD_ID).accept(new OpenGlider());
         registerCapabilities();
         registerHandlers();
     }
@@ -35,7 +35,7 @@ public class OpenGliderForge {
 
     private static void registerHandlers() {
         MinecraftForge.EVENT_BUS.addListener((final TickEvent.PlayerTickEvent evt) -> {
-            if (evt.phase == TickEvent.Phase.END) PlayerGlidingHandler.onPlayerTick$end(evt.player);
+            if (evt.phase == TickEvent.Phase.END) PlayerGlidingHandler.onPlayerTick$End(evt.player);
         });
     }
 

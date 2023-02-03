@@ -1,10 +1,13 @@
 package fuzs.openglider.client;
 
 import fuzs.openglider.OpenGlider;
+import fuzs.openglider.client.handler.FovModifierHandler;
 import fuzs.openglider.client.handler.GliderRenderingHandler;
-import fuzs.puzzleslib.client.core.ClientCoreServices;
+import fuzs.openglider.client.handler.GlidingCrouchHandler;
+import fuzs.puzzleslib.client.core.ClientFactories;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.ComputeFovModifierEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -15,7 +18,7 @@ public class OpenGliderForgeClient {
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
-        ClientCoreServices.FACTORIES.clientModConstructor(OpenGlider.MOD_ID).accept(new OpenGliderClient());
+        ClientFactories.INSTANCE.clientModConstructor(OpenGlider.MOD_ID).accept(new OpenGliderClient());
         registerHandlers();
     }
 
@@ -27,5 +30,15 @@ public class OpenGliderForgeClient {
 //        MinecraftForge.EVENT_BUS.addListener(GliderRenderingHandler::onRenderPlayer$post);
 //        MinecraftForge.EVENT_BUS.addListener(GliderRenderingHandler::onRenderLevelStage);
         MinecraftForge.EVENT_BUS.addListener(GliderRenderingHandler::onMouseScrolling);
+
+        MinecraftForge.EVENT_BUS.addListener((final RenderPlayerEvent.Pre evt) -> {
+            GlidingCrouchHandler.onRenderPlayer$Pre(evt.getEntity(), evt.getRenderer(), evt.getPartialTick(), evt.getPoseStack(), evt.getMultiBufferSource(), evt.getPackedLight()).ifPresent(unit -> evt.setCanceled(true));
+        });
+        MinecraftForge.EVENT_BUS.addListener((final RenderPlayerEvent.Post evt) -> {
+            GlidingCrouchHandler.onRenderPlayer$Post(evt.getEntity(), evt.getRenderer(), evt.getPartialTick(), evt.getPoseStack(), evt.getMultiBufferSource(), evt.getPackedLight());
+        });
+        MinecraftForge.EVENT_BUS.addListener((final ComputeFovModifierEvent evt) -> {
+            FovModifierHandler.onComputeFovModifier(evt.getPlayer(), evt.getFovModifier(), evt.getNewFovModifier()).ifPresent(evt::setNewFovModifier);
+        });
     }
 }

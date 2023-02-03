@@ -1,8 +1,9 @@
-package fuzs.openglider.mixin;
+package fuzs.openglider.mixin.client;
 
-import fuzs.openglider.api.event.PlayerTickEvents;
+import fuzs.openglider.helper.GliderCapabilityHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,13 +18,11 @@ abstract class PlayerMixin extends LivingEntity {
         super(entityType, level);
     }
 
-    @Inject(method = "tick", at = @At("HEAD"))
-    public void tick$head(CallbackInfo callbackInfo) {
-        PlayerTickEvents.START_TICK.invoker().onStartTick((Player) (Object) this);
-    }
-
-    @Inject(method = "tick", at = @At("TAIL"))
-    public void tick$tail(CallbackInfo callbackInfo) {
-        PlayerTickEvents.END_TICK.invoker().onEndTick((Player) (Object) this);
+    @Inject(method = "updatePlayerPose", at = @At("HEAD"), cancellable = true)
+    protected void updatePlayerPose(CallbackInfo callback) {
+        if (this.canEnterPose(Pose.SWIMMING) && GliderCapabilityHelper.getIsGliderDeployed(Player.class.cast(this))) {
+            this.setPose(Pose.FALL_FLYING);
+            callback.cancel();
+        }
     }
 }

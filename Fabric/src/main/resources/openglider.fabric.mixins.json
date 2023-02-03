@@ -5,9 +5,11 @@
   "package": "fuzs.openglider.mixin",
   "refmap": "openglider.refmap.json",
   "mixins": [
-    "PlayerMixin"
+    "PlayerFabricMixin"
   ],
   "client": [
+    "client.AbstractClientPlayerFabricMixin",
+    "client.PlayerRendererFabricMixin"
   ],
   "injectors": {
     "defaultRequire": 1

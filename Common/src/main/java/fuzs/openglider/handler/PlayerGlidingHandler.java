@@ -22,7 +22,7 @@ public final class PlayerGlidingHandler {
      *
      * @param player - the player gliding
      */
-    public static void onPlayerTick$end(Player player){
+    public static void onPlayerTick$End(Player player){
         if (!GliderCapabilityHelper.getIsGliderDeployed(player) || !PlayerGlidingHelper.isAllowedToGlide(player)) return;
         ItemStack stack = GliderCapabilityHelper.getGlider(player);
         if (PlayerGlidingHelper.isValidGlider(stack)) {
@@ -74,7 +74,9 @@ public final class PlayerGlidingHandler {
         }
 
         // Stop fall damage
-        player.fallDistance = 0.0F;
+        if (player.getDeltaMovement().y > -0.5) {
+            player.fallDistance = 1.0F;
+        }
     }
 
     private static void handleClientAnimations(Player player) {

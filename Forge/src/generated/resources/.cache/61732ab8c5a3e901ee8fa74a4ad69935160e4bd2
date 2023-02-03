@@ -1,10 +1,8 @@
-// 1.19.2	2022-08-31T14:16:26.503073	Item Models: openglider
+// 1.19.2	2023-02-01T20:33:34.879391	Item Models: openglider
 0eb6e1bd3dc8c3d8768b2458702577730286ffe3 assets/openglider/models/item/broken_hang_glider.json
 68b524c93fb9c4205c62bfbc8972a02a7af9c82c assets/openglider/models/item/broken_reinforced_hang_glider.json
 1c833241b70ea54874e7c5fa4231afec88971c7b assets/openglider/models/item/deployed_hang_glider.json
 40e37dea6943608d6de863b4ee09c9debf5a9fa1 assets/openglider/models/item/glider_framework.json
 5b292f555f4dd9b5bb39b22a5969d69d492da236 assets/openglider/models/item/glider_wing.json
 99ab134012bdec5b0e4b25da4c3d6af7dc523249 assets/openglider/models/item/hang_glider.json
-f58274002b1c9d755800971f7826edd675efcd00 assets/openglider/models/item/hang_glider_gliding.json
-034e1e7cf0abe9f5af3797261bbd4fd57b613424 assets/openglider/models/item/hang_glider_in_hand.json
 270a9d243395804f7a26e7cb9a1b2490d5ea808e assets/openglider/models/item/reinforced_hang_glider.json

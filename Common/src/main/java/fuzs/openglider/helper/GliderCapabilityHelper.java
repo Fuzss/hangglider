@@ -36,38 +36,6 @@ public class GliderCapabilityHelper {
     }
 
     /**
-     * Wrapper method for {@link GlidingPlayerCapability#getIsPlayerGliding()}, taking into account capabilities.
-     *
-     * @param player - the player to check
-     * @return - True if gliding, False otherwise (includes no capability)
-     */
-    public static boolean getIsPlayerGliding(Player player) {
-        return ModRegistry.GLIDING_PLAYER_CAPABILITY.maybeGet(player).map(GlidingPlayerCapability::getIsPlayerGliding).orElseGet(() -> {
-            OpenGlider.LOGGER.error("Cannot get player gliding status, gliderBasic capability not present.");
-            return false;
-        });
-    }
-
-    /**
-     * Wrapper method for {@link GlidingPlayerCapability#setIsPlayerGliding(boolean)}, taking into account capabilities.
-     *
-     * @param player - the player to check
-     * @param isGliding - the gliding state to set
-     */
-    public static void setIsPlayerGliding(Player player, boolean isGliding) {
-        PlayerCapabilityKey<GlidingPlayerCapability> capability = ModRegistry.GLIDING_PLAYER_CAPABILITY;
-        Optional<GlidingPlayerCapability> optional = capability.maybeGet(player);
-        if (optional.isPresent()) {
-            optional.get().setIsPlayerGliding(isGliding);
-            if (player instanceof ServerPlayer serverPlayer) {
-                capability.syncToRemote(serverPlayer);
-            }
-        } else {
-            OpenGlider.LOGGER.error("Cannot set player gliding, gliderBasic capability not present.");
-        }
-    }
-
-    /**
      * Wrapper method for {@link GlidingPlayerCapability#getIsGliderDeployed()}, taking into account capabilities.
      *
      * @param player - the player to check

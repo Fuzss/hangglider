@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import fuzs.openglider.OpenGlider;
 import fuzs.openglider.api.world.item.Glider;
+import fuzs.openglider.client.init.ModClientRegistry;
 import fuzs.openglider.client.model.GliderModel;
 import fuzs.openglider.config.ClientConfig;
 import fuzs.openglider.helper.GliderCapabilityHelper;
@@ -28,7 +29,7 @@ public class GliderLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 
     public GliderLayer(RenderLayerParent<T, M> renderLayerParent, EntityModelSet entityModelSet) {
         super(renderLayerParent);
-        this.gliderModel = new GliderModel<>(entityModelSet);
+        this.gliderModel = new GliderModel<>(entityModelSet.bakeLayer(ModClientRegistry.GLIDER));
     }
 
     @Override
@@ -51,9 +52,10 @@ public class GliderLayer<T extends LivingEntity, M extends EntityModel<T>> exten
                 // get texture and render the glider
                 ItemStack stack = GliderCapabilityHelper.getGlider(player);
                 ResourceLocation gliderTexture = ((Glider) stack.getItem()).getGliderTexture(stack);
-                VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(gliderTexture), false, stack.hasFoil());
+                RenderType renderType = RenderType.armorCutoutNoCull(gliderTexture);
+                VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer, renderType, false, stack.hasFoil());
                 // always render with full brightness
-                this.gliderModel.renderToBuffer(poseStack, vertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                this.gliderModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
                 poseStack.popPose();
             }
