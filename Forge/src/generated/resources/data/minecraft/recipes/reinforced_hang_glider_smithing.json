@@ -4,9 +4,9 @@
     "item": "minecraft:elytra"
   },
   "base": {
-    "item": "openglider:hang_glider"
+    "item": "hangglider:hang_glider"
   },
   "result": {
-    "item": "openglider:reinforced_hang_glider"
+    "item": "hangglider:reinforced_hang_glider"
   }
 }

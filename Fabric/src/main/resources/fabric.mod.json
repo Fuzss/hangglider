@@ -41,7 +41,7 @@
 
   "custom": {
     "cardinal-components": [
-      "${modId}:gliding_player"
+      "${modId}:gliding"
     ]
   }
 }
