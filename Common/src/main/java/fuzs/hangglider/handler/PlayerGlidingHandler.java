@@ -13,32 +13,42 @@ public class PlayerGlidingHandler {
 
     public static void onPlayerTick$End(Player player) {
 
-        if (PlayerGlidingHelper.isGliderDeployed(player) && PlayerGlidingHelper.isAllowedToGlide(player)) {
+        if (PlayerGlidingHelper.isGliderDeployed(player)) {
 
             ItemStack stack = PlayerGlidingHelper.getGliderInHand(player);
             if (PlayerGlidingHelper.isValidGlider(stack)) {
 
-                PlayerGlidingHelper.setGliding(player, true);
+                if (PlayerGlidingHelper.isAllowedToGlide(player)) {
 
-                ServerConfig.GliderConfig glider = ((GliderItem) stack.getItem()).getGliderMaterialSettings();
+                    PlayerGlidingHelper.setGliding(player, true);
+                    ServerConfig.GliderConfig glider = ((GliderItem) stack.getItem()).getGliderMaterialSettings();
 
-                handleGlidingMovement(player, stack, glider);
+                    handleGlidingMovement(player, stack, glider);
 
-                if (!player.level.isClientSide) {
+                    if (!player.level.isClientSide) {
 
-                    handleGliderDurability(player, stack, glider);
+                        handleGliderDurability(player, stack, glider);
+                    }
+
+                    resetClientAnimations(player);
+
+                    return;
                 }
+            } else {
 
-                //no wild arm swinging while flying
-                player.animationSpeed = 0.0F;
-                player.animationPosition = 0.0F;
-
-                return;
+                PlayerGlidingHelper.setGliderDeployed(player, false);
             }
         }
 
         PlayerGlidingHelper.setGliding(player, false);
-        PlayerGlidingHelper.setGliderDeployed(player, false);
+    }
+
+    public static void resetClientAnimations(Player player) {
+
+        // no wild arm swinging while flying
+
+        player.animationSpeed = 0.0F;
+        player.animationPosition = 0.0F;
     }
 
     private static void handleGlidingMovement(Player player, ItemStack stack, ServerConfig.GliderConfig glider) {
@@ -79,8 +89,11 @@ public class PlayerGlidingHandler {
     }
 
     private static void handleGliderDurability(Player player, ItemStack stack, ServerConfig.GliderConfig glider) {
+
         if (glider.consumeDurability && player.getRandom().nextInt(glider.durabilityUseInterval) == 0) {
+
             stack.hurtAndBreak(1, player, brokenStack -> {
+
                 brokenStack.broadcastBreakEvent(PlayerGlidingHelper.getGliderHoldingHand(player).orElseThrow(() -> new IllegalStateException("No valid glider held in hand")));
             });
         }

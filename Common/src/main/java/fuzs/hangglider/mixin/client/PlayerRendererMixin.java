@@ -20,8 +20,12 @@ abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractClientPl
         super(context, entityModel, f);
     }
 
-    @Inject(method = "setupRotations", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "setupRotations", at = @At("TAIL"), cancellable = true)
     public void setupRotations(AbstractClientPlayer entityLiving, PoseStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks, CallbackInfo callback) {
-        if (PlayerGlidingHelper.isGliding(entityLiving)) matrixStack.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
+        if (PlayerGlidingHelper.isGliding(entityLiving)) {
+            matrixStack.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
+            // reposition to better align with bounding box just like swimming model
+            matrixStack.translate(0.0F, -1.0F, 0.3F);
+        }
     }
 }

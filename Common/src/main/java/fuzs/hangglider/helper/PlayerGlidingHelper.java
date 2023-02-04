@@ -1,13 +1,11 @@
 package fuzs.hangglider.helper;
 
 import fuzs.hangglider.capability.GlidingCapability;
-import fuzs.hangglider.core.CommonAbstractions;
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.hangglider.world.item.GliderItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +22,8 @@ public class PlayerGlidingHelper {
      * @param player - the player to check
      * @return - true if the conditions are met, false otherwise
      */
-    public static boolean isAllowedToGlide(Player player){
+    public static boolean isAllowedToGlide(Player player) {
+        // delta movement is not synced to remote players, so this is always false for those, but we just update their animation via mixin
         return !player.isOnGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION) && !player.getAbilities().flying && !player.isInWater() && player.getDeltaMovement().y < 0;
     }
 
@@ -57,6 +56,7 @@ public class PlayerGlidingHelper {
     }
 
     public static void setGliderDeployed(Player player, boolean gliderDeployed) {
+        if (player.level.isClientSide) return;
         ModRegistry.GLIDING_CAPABILITY.maybeGet(player).ifPresent(capability -> {
             boolean wasGliderDeployed = capability.isGliderDeployed();
             capability.setGliderDeployed(gliderDeployed);
@@ -71,12 +71,15 @@ public class PlayerGlidingHelper {
     }
 
     public static void setGliding(Player player, boolean gliding) {
+        if (player.level.isClientSide) return;
         ModRegistry.GLIDING_CAPABILITY.maybeGet(player).ifPresent(capability -> {
             boolean wasGliding = capability.isGliding();
             capability.setGliding(gliding);
             if (wasGliding != capability.isGliding() && player instanceof ServerPlayer serverPlayer) {
-                CommonAbstractions.INSTANCE.setForcedPlayerPose(player, gliding ? Pose.SPIN_ATTACK : null);
+//                CommonAbstractions.INSTANCE.setForcedPlayerPose(player, gliding ? Pose.SPIN_ATTACK : null);
                 ModRegistry.GLIDING_CAPABILITY.syncToRemote(serverPlayer);
+                // only sync to self, vanilla will sync pose for RemotePlayers automatically
+//                HangGlider.NETWORKING.sendTo(new ClientboundForcePlayerPoseMessage(gliding), serverPlayer);
             }
         });
     }

@@ -4,7 +4,6 @@ import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.config.ServerConfig;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -39,7 +38,7 @@ public class GliderItem extends Item {
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
         }
 
-        return new InteractionResultHolder<>(InteractionResult.CONSUME_PARTIAL, stack);
+        return InteractionResultHolder.fail(stack);
     }
 
     @Override

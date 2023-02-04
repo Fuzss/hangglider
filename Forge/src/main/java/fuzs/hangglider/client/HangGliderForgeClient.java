@@ -21,7 +21,7 @@ public class HangGliderForgeClient {
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
-        ClientFactories.INSTANCE.clientModConstructor(HangGlider.MOD_ID).accept(new OpenGliderClient());
+        ClientFactories.INSTANCE.clientModConstructor(HangGlider.MOD_ID).accept(new HangGliderClient());
         registerHandlers();
     }
 

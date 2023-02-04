@@ -13,15 +13,13 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public class OpenGliderClient implements ClientModConstructor {
+public class HangGliderClient implements ClientModConstructor {
 
     @Override
     public void onRegisterLayerDefinitions(LayerDefinitionsContext context) {
@@ -37,17 +35,12 @@ public class OpenGliderClient implements ClientModConstructor {
 
     @Override
     public void onRegisterItemModelProperties(ItemModelPropertiesContext context) {
-        registerHangGliderModelProperties(context, ModRegistry.HANG_GLIDER_ITEM.get());
-        registerHangGliderModelProperties(context, ModRegistry.REINFORCED_HANG_GLIDER_ITEM.get());
-    }
-
-    private static void registerHangGliderModelProperties(ItemModelPropertiesContext context, Item item) {
-        context.registerItem(item, new ResourceLocation(HangGlider.MOD_ID, "deployed"), (ItemStack itemStack, ClientLevel clientLevel, LivingEntity livingEntity, int i) -> {
+        context.registerItemProperty(HangGlider.id("deployed"), (ItemStack itemStack, ClientLevel clientLevel, LivingEntity livingEntity, int i) -> {
             return livingEntity instanceof Player player && PlayerGlidingHelper.isValidGlider(itemStack) && PlayerGlidingHelper.isGliderDeployed(player) && PlayerGlidingHelper.getGliderInHand(player) == itemStack ? 1.0F : 0.0F;
-        });
-        context.registerItem(item, new ResourceLocation(HangGlider.MOD_ID, "broken"), (ItemStack itemStack, ClientLevel clientLevel, LivingEntity livingEntity, int i) -> {
+        }, ModRegistry.HANG_GLIDER_ITEM.get(), ModRegistry.REINFORCED_HANG_GLIDER_ITEM.get());
+        context.registerItemProperty(HangGlider.id("broken"), (ItemStack itemStack, ClientLevel clientLevel, LivingEntity livingEntity, int i) -> {
             return !PlayerGlidingHelper.isValidGlider(itemStack) ? 1.0F : 0.0F;
-        });
+        }, ModRegistry.HANG_GLIDER_ITEM.get(), ModRegistry.REINFORCED_HANG_GLIDER_ITEM.get());
     }
 
     @Override

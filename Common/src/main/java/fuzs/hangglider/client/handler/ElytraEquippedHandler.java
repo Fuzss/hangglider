@@ -35,14 +35,13 @@ public class ElytraEquippedHandler {
             int topPos = screenHeight / 2 + 16;
             Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(new ItemStack(Items.ELYTRA), leftPos, topPos);
 
-            double fade = Math.sin(this.tickTime - tickDelta) * 0.5 + 0.5;
             TextureAtlasSprite textureatlassprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CROSS_TEXTURE_LOCATION);
             RenderSystem.enableBlend();
-//            RenderSystem.defaultBlendFunc();
-            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+            RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, textureatlassprite.atlas().location());
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, (float) fade);
+            float alpha = (float) (Math.sin((this.tickTime - tickDelta) * 0.5) * 0.5 + 0.5);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
             GuiComponent.blit(poseStack, leftPos, topPos, 400, 16, 16, textureatlassprite);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.disableBlend();

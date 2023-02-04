@@ -26,7 +26,7 @@ public class ModRegistry {
     public static final RegistryReference<Item> REINFORCED_HANG_GLIDER_ITEM  = REGISTRY.registerItem("reinforced_hang_glider", () -> new GliderItem(new Item.Properties().durability(2202).tab(CREATIVE_MODE_TAB).rarity(Rarity.UNCOMMON), GliderItem.Type.REINFORCED));
 
     private static final CapabilityController CAPABILITIES = CommonFactories.INSTANCE.capabilities(HangGlider.MOD_ID);
-    public static final PlayerCapabilityKey<GlidingCapability> GLIDING_CAPABILITY = CAPABILITIES.registerPlayerCapability("gliding", GlidingCapability.class, entity -> new GlidingCapabilityImpl(), PlayerRespawnStrategy.LOSSLESS, SyncStrategy.SELF);
+    public static final PlayerCapabilityKey<GlidingCapability> GLIDING_CAPABILITY = CAPABILITIES.registerPlayerCapability("gliding", GlidingCapability.class, entity -> new GlidingCapabilityImpl(), PlayerRespawnStrategy.LOSSLESS, SyncStrategy.SELF_AND_TRACKING);
 
     public static void touch() {
 

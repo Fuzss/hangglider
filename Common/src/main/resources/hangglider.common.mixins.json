@@ -5,10 +5,12 @@
   "package": "fuzs.hangglider.mixin",
   "refmap": "hangglider.refmap.json",
   "mixins": [
+    "PlayerMixin"
   ],
   "client": [
     "client.PlayerItemInHandLayerMixin",
-    "client.PlayerRendererMixin"
+    "client.PlayerRendererMixin",
+    "client.RemotePlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -15,8 +15,8 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Optional;
 
 public class GlidingCameraHandler {
-    private static float elytraRotation;
-    private static float elytraRotationOld;
+    private static float gliderRotation;
+    private static float gliderRotationOld;
     private static CameraType oldCameraType;
 
     public static void onClientTick$End(Minecraft minecraft) {
@@ -73,13 +73,13 @@ public class GlidingCameraHandler {
                 // fix Math#acos returning NaN when d2 > 1.0
                 float rotationDelta = (float) (Math.signum(d3) * Math.acos(Math.min(d2, 1.0)));
                 rotationDelta = rotationDelta / (float) (Math.PI) * 180.0F * 0.4F * (float) HangGlider.CONFIG.get(ClientConfig.class).glidingTiltAmount;
-                elytraRotationOld = elytraRotation;
-                elytraRotation += (rotationDelta - elytraRotation) * (float) HangGlider.CONFIG.get(ClientConfig.class).glidingTiltSpeed;
+                gliderRotationOld = gliderRotation;
+                gliderRotation += (rotationDelta - gliderRotation) * (float) HangGlider.CONFIG.get(ClientConfig.class).glidingTiltSpeed;
             }
 
         } else {
 
-            elytraRotationOld = elytraRotation = 0.0F;
+            gliderRotationOld = gliderRotation = 0.0F;
         }
     }
 
@@ -87,9 +87,9 @@ public class GlidingCameraHandler {
 
         if (HangGlider.CONFIG.get(ClientConfig.class).glidingCameraTilt) {
 
-            if (elytraRotation != 0.0F || elytraRotationOld != 0.0F) {
+            if (gliderRotation != 0.0F || gliderRotationOld != 0.0F) {
 
-                return Optional.of(Mth.lerp(tickDelta, elytraRotationOld, elytraRotation));
+                return Optional.of(Mth.lerp(tickDelta, gliderRotationOld, gliderRotation));
             }
         }
 
