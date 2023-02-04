@@ -21,7 +21,7 @@ abstract class PlayerRendererFabricMixin extends LivingEntityRenderer<AbstractCl
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/player/PlayerRenderer;setModelProperties(Lnet/minecraft/client/player/AbstractClientPlayer;)V", shift = At.Shift.AFTER), cancellable = true)
-    public void render(AbstractClientPlayer entity, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback) {
+    public void render$0(AbstractClientPlayer entity, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback) {
         RenderPlayerEvents.BEFORE.invoker().beforeRenderPlayer(entity, PlayerRenderer.class.cast(this), partialTicks, matrixStack, buffer, packedLight).ifPresent(unit -> callback.cancel());
     }
 

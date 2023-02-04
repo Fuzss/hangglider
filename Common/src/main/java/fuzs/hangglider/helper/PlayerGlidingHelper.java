@@ -76,10 +76,7 @@ public class PlayerGlidingHelper {
             boolean wasGliding = capability.isGliding();
             capability.setGliding(gliding);
             if (wasGliding != capability.isGliding() && player instanceof ServerPlayer serverPlayer) {
-//                CommonAbstractions.INSTANCE.setForcedPlayerPose(player, gliding ? Pose.SPIN_ATTACK : null);
                 ModRegistry.GLIDING_CAPABILITY.syncToRemote(serverPlayer);
-                // only sync to self, vanilla will sync pose for RemotePlayers automatically
-//                HangGlider.NETWORKING.sendTo(new ClientboundForcePlayerPoseMessage(gliding), serverPlayer);
             }
         });
     }
