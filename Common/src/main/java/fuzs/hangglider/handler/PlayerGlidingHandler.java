@@ -5,7 +5,9 @@ import fuzs.hangglider.config.ServerConfig;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
 import fuzs.hangglider.wind.WindHelper;
 import fuzs.hangglider.world.item.GliderItem;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
@@ -16,7 +18,7 @@ public class PlayerGlidingHandler {
         if (PlayerGlidingHelper.isGliderDeployed(player)) {
 
             ItemStack stack = PlayerGlidingHelper.getGliderInHand(player);
-            if (PlayerGlidingHelper.isValidGlider(stack)) {
+            if (PlayerGlidingHelper.isValidGlider(stack) && !(player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ElytraItem)) {
 
                 if (PlayerGlidingHelper.isAllowedToGlide(player)) {
 
