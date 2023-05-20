@@ -2,15 +2,19 @@ package fuzs.hangglider;
 
 import fuzs.hangglider.config.ClientConfig;
 import fuzs.hangglider.config.ServerConfig;
+import fuzs.hangglider.handler.PlayerGlidingHandler;
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.hangglider.proxy.ClientProxy;
 import fuzs.hangglider.proxy.Proxy;
 import fuzs.hangglider.proxy.ServerProxy;
-import fuzs.puzzleslib.config.ConfigHolder;
-import fuzs.puzzleslib.core.CommonFactories;
-import fuzs.puzzleslib.core.DistTypeExecutor;
-import fuzs.puzzleslib.core.ModConstructor;
+import fuzs.puzzleslib.api.config.v3.ConfigHolder;
+import fuzs.puzzleslib.api.core.v1.DistTypeExecutor;
+import fuzs.puzzleslib.api.core.v1.ModConstructor;
+import fuzs.puzzleslib.api.core.v1.context.CreativeModeTabContext;
+import fuzs.puzzleslib.api.event.v1.PlayerTickEvents;
+import fuzs.puzzleslib.api.item.v2.CreativeModeTabConfigurator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,15 +25,21 @@ public class HangGlider implements ModConstructor {
 
     @SuppressWarnings("Convert2MethodRef")
     public static final Proxy PROXY = DistTypeExecutor.getForDistType(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
-    @SuppressWarnings("Convert2MethodRef")
-    public static final ConfigHolder CONFIG = CommonFactories.INSTANCE
-            .clientConfig(ClientConfig.class, () -> new ClientConfig())
-            .serverConfig(ServerConfig.class, () -> new ServerConfig());
+    public static final ConfigHolder CONFIG = ConfigHolder.builder(MOD_ID).client(ClientConfig.class).server(ServerConfig.class);
 
     @Override
     public void onConstructMod() {
-        CONFIG.bakeConfigs(MOD_ID);
         ModRegistry.touch();
+        registerHandlers();
+    }
+
+    private static void registerHandlers() {
+        PlayerTickEvents.END.register(PlayerGlidingHandler::onPlayerTick$End);
+    }
+
+    @Override
+    public void onRegisterCreativeModeTabs(CreativeModeTabContext context) {
+        context.registerCreativeModeTab(CreativeModeTabConfigurator.from(MOD_ID, () -> new ItemStack(ModRegistry.HANG_GLIDER_ITEM.get())));
     }
 
     public static ResourceLocation id(String path) {

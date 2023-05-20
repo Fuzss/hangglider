@@ -1,10 +1,10 @@
 package fuzs.hangglider.client.init;
 
 import fuzs.hangglider.HangGlider;
-import fuzs.puzzleslib.client.model.geom.ModelLayerRegistry;
+import fuzs.puzzleslib.api.client.init.v1.ModelLayerFactory;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 
 public class ModClientRegistry {
-    private static final ModelLayerRegistry LAYER_REGISTRY = ModelLayerRegistry.of(HangGlider.MOD_ID);
-    public static final ModelLayerLocation GLIDER = LAYER_REGISTRY.register("glider");
+    static final ModelLayerFactory FACTORY = ModelLayerFactory.from(HangGlider.MOD_ID);
+    public static final ModelLayerLocation GLIDER = FACTORY.register("glider");
 }

@@ -1,7 +1,7 @@
 package fuzs.hangglider.client.handler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -33,11 +33,11 @@ public class GlidingCrouchHandler {
             float interpolatedYaw = Mth.lerp(partialTick, player.yHeadRotO, player.yHeadRot);
 
             poseStack.pushPose();
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(-interpolatedYaw));
+            poseStack.mulPose(Axis.YP.rotationDegrees(-interpolatedYaw));
             poseStack.translate(0.0F, player.getBbHeight() / 2.0F, 0.0F);
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+            poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
             poseStack.translate(0.0F, -player.getBbHeight() / 2.0F, 0.0F);
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(interpolatedYaw));
+            poseStack.mulPose(Axis.YP.rotationDegrees(interpolatedYaw));
 
             appliedGlidingRotations = true;
 

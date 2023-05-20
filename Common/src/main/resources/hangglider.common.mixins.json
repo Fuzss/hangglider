@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "package": "fuzs.hangglider.mixin",
   "refmap": "hangglider.refmap.json",
+  "plugin": "fuzs.hangglider.mixin.ModMixinConfigPlugin",
   "mixins": [
     "PlayerMixin"
   ],

@@ -1,6 +1,6 @@
 package fuzs.hangglider.capability;
 
-import fuzs.puzzleslib.capability.data.SyncedCapabilityComponent;
+import fuzs.puzzleslib.api.capability.v2.data.SyncedCapabilityComponent;
 
 /**
  * This interface defines the contract to deal with the gliding status of a player.

@@ -1,7 +1,7 @@
 package fuzs.hangglider.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import fuzs.hangglider.api.client.event.ComputeCameraAngleEvents;
 import fuzs.hangglider.mixin.client.accessor.CameraAccessor;
 import net.minecraft.client.Camera;
@@ -22,7 +22,7 @@ abstract class GameRendererMixin {
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setup(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/world/entity/Entity;ZZF)V", shift = At.Shift.AFTER))
     public void renderLevel(float partialTicks, long finishTimeNano, PoseStack matrixStack, CallbackInfo callback) {
         ComputeCameraAngleEvents.ROLL.invoker().onComputeCameraAngle(GameRenderer.class.cast(this), this.mainCamera, partialTicks).ifPresent(roll -> {
-            matrixStack.mulPose(Vector3f.ZP.rotationDegrees(roll));
+            matrixStack.mulPose(Axis.ZP.rotationDegrees(roll));
         });
         ComputeCameraAngleEvents.PITCH.invoker().onComputeCameraAngle(GameRenderer.class.cast(this), this.mainCamera, partialTicks).ifPresent(pitch -> {
             ((CameraAccessor) this.mainCamera).hangglider$setXRot(pitch);

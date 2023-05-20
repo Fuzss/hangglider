@@ -1,6 +1,5 @@
 package fuzs.hangglider.client.handler;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import fuzs.hangglider.HangGlider;
@@ -27,19 +26,19 @@ public class ElytraEquippedHandler {
         this.tickTime = 40;
     }
 
-    public void onRenderGui(PoseStack poseStack, int screenWidth, int screenHeight, float tickDelta) {
+    public void onRenderGui(Minecraft minecraft, PoseStack poseStack, float tickDelta, int screenWidth, int screenHeight) {
 
         if (this.tickTime > 0) {
 
             int leftPos = (screenWidth - 16) / 2;
             int topPos = screenHeight / 2 + 16;
-            Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(new ItemStack(Items.ELYTRA), leftPos, topPos);
+            minecraft.getItemRenderer().renderAndDecorateItem(new ItemStack(Items.ELYTRA), leftPos, topPos);
 
-            TextureAtlasSprite textureatlassprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CROSS_TEXTURE_LOCATION);
+            TextureAtlasSprite textureatlassprite = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CROSS_TEXTURE_LOCATION);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, textureatlassprite.atlas().location());
+            RenderSystem.setShaderTexture(0, textureatlassprite.atlasLocation());
             float alpha = (float) (Math.sin((this.tickTime - tickDelta) * 0.5) * 0.5 + 0.5);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
             GuiComponent.blit(poseStack, leftPos, topPos, 400, 16, 16, textureatlassprite);
