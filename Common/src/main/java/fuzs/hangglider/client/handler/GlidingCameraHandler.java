@@ -23,7 +23,7 @@ public class GlidingCameraHandler {
 
         if (minecraft.player == null) return;
 
-        if (HangGlider.CONFIG.get(ClientConfig.class).thirdPersonGliding) {
+        if (HangGlider.CONFIG.get(ClientConfig.class).autoThirdPersonGliding) {
 
             setThirdPersonGliding(minecraft.player, minecraft.options);
         }

@@ -6,9 +6,9 @@ import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class ModItemModelProvider extends AbstractModelProvider {
+public class ModModelProvider extends AbstractModelProvider {
 
-    public ModItemModelProvider(PackOutput packOutput, String modId, ExistingFileHelper fileHelper) {
+    public ModModelProvider(PackOutput packOutput, String modId, ExistingFileHelper fileHelper) {
         super(packOutput, modId, fileHelper);
     }
 

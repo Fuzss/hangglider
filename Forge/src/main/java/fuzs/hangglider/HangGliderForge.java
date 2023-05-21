@@ -1,7 +1,7 @@
 package fuzs.hangglider;
 
 import fuzs.hangglider.capability.GlidingCapability;
-import fuzs.hangglider.data.ModItemModelProvider;
+import fuzs.hangglider.data.ModModelProvider;
 import fuzs.hangglider.data.ModLanguageProvider;
 import fuzs.hangglider.data.ModRecipeProvider;
 import fuzs.hangglider.data.ModSpriteSourceProvider;
@@ -40,7 +40,7 @@ public class HangGliderForge {
         final PackOutput packOutput = dataGenerator.getPackOutput();
         final CompletableFuture<HolderLookup.Provider> lookupProvider = evt.getLookupProvider();
         final ExistingFileHelper fileHelper = evt.getExistingFileHelper();
-        dataGenerator.addProvider(true, new ModItemModelProvider(packOutput, HangGlider.MOD_ID, fileHelper));
+        dataGenerator.addProvider(true, new ModModelProvider(packOutput, HangGlider.MOD_ID, fileHelper));
         dataGenerator.addProvider(true, new ModLanguageProvider(packOutput, HangGlider.MOD_ID));
         dataGenerator.addProvider(true, new ModRecipeProvider(packOutput));
         dataGenerator.addProvider(true, new ModSpriteSourceProvider(packOutput, HangGlider.MOD_ID, fileHelper));

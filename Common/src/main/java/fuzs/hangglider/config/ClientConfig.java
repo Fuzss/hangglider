@@ -12,6 +12,6 @@ public class ClientConfig implements ConfigCore {
     @Config(description = "Multiplier for camera tilt speed when gliding.")
     @Config.DoubleRange(min = 0.1, max = 1.0)
     public double glidingTiltSpeed = 0.4;
-    @Config(description = "Auto-switch to third-person mode while gliding.")
-    public boolean thirdPersonGliding = false;
+    @Config(description = "Automatically switch to third-person mode while gliding.")
+    public boolean autoThirdPersonGliding = false;
 }
