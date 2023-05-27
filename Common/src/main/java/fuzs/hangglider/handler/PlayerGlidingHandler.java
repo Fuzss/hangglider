@@ -48,9 +48,8 @@ public class PlayerGlidingHandler {
     public static void resetClientAnimations(Player player) {
 
         // no wild arm swinging while flying
-
-        player.animationSpeed = 0.0F;
-        player.animationPosition = 0.0F;
+        player.walkAnimation.setSpeed(0.0F);
+        player.walkAnimation.position(0.0F);
     }
 
     private static void handleGlidingMovement(Player player, ItemStack stack, ServerConfig.GliderConfig glider) {

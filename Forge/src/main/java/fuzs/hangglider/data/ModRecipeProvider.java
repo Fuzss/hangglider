@@ -6,9 +6,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.UpgradeRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.function.Consumer;
 
@@ -42,8 +41,10 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 .pattern("#@#")
                 .unlockedBy(getHasName(ModRegistry.GLIDER_FRAMEWORK_ITEM.get()), has(ModRegistry.GLIDER_FRAMEWORK_ITEM.get()))
                 .save(recipeConsumer);
-        UpgradeRecipeBuilder.smithing(Ingredient.of(ModRegistry.HANG_GLIDER_ITEM.get()), Ingredient.of(Items.ELYTRA), RecipeCategory.TOOLS, ModRegistry.REINFORCED_HANG_GLIDER_ITEM.get())
-                .unlocks(getHasName(Items.ELYTRA), has(Items.ELYTRA))
-                .save(recipeConsumer, getItemName(ModRegistry.REINFORCED_HANG_GLIDER_ITEM.get()) + "_smithing");
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModRegistry.REINFORCED_HANG_GLIDER_ITEM.get())
+                .requires(ModRegistry.HANG_GLIDER_ITEM.get())
+                .requires(Items.ELYTRA)
+                .unlockedBy(getHasName(Items.ELYTRA), has(Items.ELYTRA))
+                .save(recipeConsumer);
     }
 }

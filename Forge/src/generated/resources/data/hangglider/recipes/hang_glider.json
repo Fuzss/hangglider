@@ -14,5 +14,6 @@
   ],
   "result": {
     "item": "hangglider:hang_glider"
-  }
+  },
+  "show_notification": true
 }

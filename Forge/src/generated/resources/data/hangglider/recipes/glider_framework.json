@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "hangglider:glider_framework"
-  }
+  },
+  "show_notification": true
 }

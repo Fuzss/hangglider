@@ -32,7 +32,7 @@ public class ElytraEquippedHandler {
 
             int leftPos = (screenWidth - 16) / 2;
             int topPos = screenHeight / 2 + 16;
-            minecraft.getItemRenderer().renderAndDecorateItem(new ItemStack(Items.ELYTRA), leftPos, topPos);
+            minecraft.getItemRenderer().renderAndDecorateItem(poseStack, new ItemStack(Items.ELYTRA), leftPos, topPos);
 
             TextureAtlasSprite textureatlassprite = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CROSS_TEXTURE_LOCATION);
             RenderSystem.enableBlend();

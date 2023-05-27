@@ -6,7 +6,7 @@ import fuzs.hangglider.capability.GlidingCapabilityImpl;
 import fuzs.hangglider.world.item.GliderItem;
 import fuzs.puzzleslib.api.capability.v2.CapabilityController;
 import fuzs.puzzleslib.api.capability.v2.data.PlayerCapabilityKey;
-import fuzs.puzzleslib.api.capability.v2.data.PlayerRespawnStrategy;
+import fuzs.puzzleslib.api.capability.v2.data.PlayerRespawnCopyStrategy;
 import fuzs.puzzleslib.api.capability.v2.data.SyncStrategy;
 import fuzs.puzzleslib.api.init.v2.RegistryManager;
 import fuzs.puzzleslib.api.init.v2.RegistryReference;
@@ -21,7 +21,7 @@ public class ModRegistry {
     public static final RegistryReference<Item> REINFORCED_HANG_GLIDER_ITEM  = REGISTRY.registerItem("reinforced_hang_glider", () -> new GliderItem(new Item.Properties().durability(2202).rarity(Rarity.UNCOMMON), GliderItem.Type.REINFORCED));
 
     static final CapabilityController CAPABILITIES = CapabilityController.from(HangGlider.MOD_ID);
-    public static final PlayerCapabilityKey<GlidingCapability> GLIDING_CAPABILITY = CAPABILITIES.registerPlayerCapability("gliding", GlidingCapability.class, entity -> new GlidingCapabilityImpl(), PlayerRespawnStrategy.LOSSLESS, SyncStrategy.SELF_AND_TRACKING);
+    public static final PlayerCapabilityKey<GlidingCapability> GLIDING_CAPABILITY = CAPABILITIES.registerPlayerCapability("gliding", GlidingCapability.class, entity -> new GlidingCapabilityImpl(), PlayerRespawnCopyStrategy.RETURNING_FROM_END, SyncStrategy.SELF_AND_TRACKING);
 
     public static void touch() {
 

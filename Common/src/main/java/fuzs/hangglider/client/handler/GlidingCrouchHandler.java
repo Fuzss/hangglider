@@ -3,22 +3,20 @@ package fuzs.hangglider.client.handler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
+import fuzs.puzzleslib.api.event.v1.core.EventResult;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.Mth;
-import net.minecraft.util.Unit;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Optional;
 
 public class GlidingCrouchHandler {
     private static boolean appliedGlidingRotations;
 
-    public static Optional<Unit> onRenderPlayer$Pre(Player player, PlayerRenderer renderer, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+    public static EventResult onRenderPlayer$Pre(Player player, PlayerRenderer renderer, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
 
         if (PlayerGlidingHelper.isGliding(player)) {
 
@@ -46,7 +44,7 @@ public class GlidingCrouchHandler {
             
         }
 
-        return Optional.empty();
+        return EventResult.PASS;
     }
 
     public static void onRenderPlayer$Post(Player player, PlayerRenderer renderer, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {

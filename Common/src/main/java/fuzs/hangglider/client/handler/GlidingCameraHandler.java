@@ -1,25 +1,29 @@
 package fuzs.hangglider.client.handler;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.config.ClientConfig;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
+import fuzs.puzzleslib.api.event.v1.core.EventResult;
+import fuzs.puzzleslib.api.event.v1.data.MutableFloat;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Optional;
 
 public class GlidingCameraHandler {
     private static float gliderRotation;
     private static float gliderRotationOld;
     private static CameraType oldCameraType;
 
-    public static void onClientTick$End(Minecraft minecraft) {
+    public static void onEndClientTick(Minecraft minecraft) {
 
         if (minecraft.player == null) return;
 
@@ -83,16 +87,18 @@ public class GlidingCameraHandler {
         }
     }
 
-    public static Optional<Float> onComputeCameraRoll(GameRenderer renderer, Camera camera, float tickDelta) {
+    public static void onComputeCameraRoll(GameRenderer renderer, Camera camera, float tickDelta, MutableFloat pitch, MutableFloat yaw, MutableFloat roll) {
 
         if (HangGlider.CONFIG.get(ClientConfig.class).glidingCameraTilt) {
 
             if (gliderRotation != 0.0F || gliderRotationOld != 0.0F) {
 
-                return Optional.of(Mth.lerp(tickDelta, gliderRotationOld, gliderRotation));
+                roll.accept(Mth.lerp(tickDelta, gliderRotationOld, gliderRotation));
             }
         }
+    }
 
-        return Optional.empty();
+    public static EventResult onRenderHand(Player player, InteractionHand hand, ItemStack stack, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, float partialTick, float interpolatedPitch, float swingProgress, float equipProgress) {
+        return PlayerGlidingHelper.isGliding(player) ? EventResult.INTERRUPT : EventResult.PASS;
     }
 }
