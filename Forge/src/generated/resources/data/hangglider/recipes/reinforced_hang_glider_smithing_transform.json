@@ -1,0 +1,13 @@
+{
+  "type": "hangglider:legacy_smithing_transform",
+  "addition": {
+    "item": "minecraft:elytra"
+  },
+  "base": {
+    "item": "hangglider:hang_glider"
+  },
+  "result": {
+    "item": "hangglider:reinforced_hang_glider"
+  },
+  "template": []
+}

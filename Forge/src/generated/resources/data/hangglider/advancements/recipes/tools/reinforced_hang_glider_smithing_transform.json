@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "hangglider:reinforced_hang_glider"
+        "recipe": "hangglider:reinforced_hang_glider_smithing_transform"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "hangglider:reinforced_hang_glider"
+      "hangglider:reinforced_hang_glider_smithing_transform"
     ]
   }
 }

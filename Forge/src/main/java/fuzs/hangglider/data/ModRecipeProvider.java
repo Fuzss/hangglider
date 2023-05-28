@@ -1,12 +1,12 @@
 package fuzs.hangglider.data;
 
+import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.data.v1.AbstractRecipeProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.world.item.Items;
 
 import java.util.function.Consumer;
@@ -41,10 +41,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 .pattern("#@#")
                 .unlockedBy(getHasName(ModRegistry.GLIDER_FRAMEWORK_ITEM.get()), has(ModRegistry.GLIDER_FRAMEWORK_ITEM.get()))
                 .save(recipeConsumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModRegistry.REINFORCED_HANG_GLIDER_ITEM.get())
-                .requires(ModRegistry.HANG_GLIDER_ITEM.get())
-                .requires(Items.ELYTRA)
-                .unlockedBy(getHasName(Items.ELYTRA), has(Items.ELYTRA))
-                .save(recipeConsumer);
+        legacyNetheriteSmithing(HangGlider.MOD_ID, recipeConsumer, ModRegistry.HANG_GLIDER_ITEM.get(), Items.ELYTRA, RecipeCategory.TOOLS, ModRegistry.REINFORCED_HANG_GLIDER_ITEM.get());
     }
 }

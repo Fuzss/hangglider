@@ -7,6 +7,7 @@ import fuzs.hangglider.data.ModRecipeProvider;
 import fuzs.hangglider.data.ModSpriteSourceProvider;
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.capability.v2.ForgeCapabilityHelper;
+import fuzs.puzzleslib.api.core.v1.ContentRegistrationFlags;
 import fuzs.puzzleslib.api.core.v1.ModConstructor;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -26,7 +27,7 @@ public class HangGliderForge {
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
-        ModConstructor.construct(HangGlider.MOD_ID, HangGlider::new);
+        ModConstructor.construct(HangGlider.MOD_ID, HangGlider::new, ContentRegistrationFlags.LEGACY_SMITHING);
         registerCapabilities();
     }
 
@@ -43,6 +44,6 @@ public class HangGliderForge {
         dataGenerator.addProvider(true, new ModModelProvider(packOutput, HangGlider.MOD_ID, fileHelper));
         dataGenerator.addProvider(true, new ModLanguageProvider(packOutput, HangGlider.MOD_ID));
         dataGenerator.addProvider(true, new ModRecipeProvider(packOutput));
-        dataGenerator.addProvider(true, new ModSpriteSourceProvider(packOutput, HangGlider.MOD_ID, fileHelper));
+        dataGenerator.addProvider(true, new ModSpriteSourceProvider(packOutput, fileHelper));
     }
 }
