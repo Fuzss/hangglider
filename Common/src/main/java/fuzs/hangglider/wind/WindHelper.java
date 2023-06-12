@@ -39,7 +39,7 @@ public class WindHelper {
         double noise = WindHelper.NOISE_GENERATOR.eval(player.getX() / windGustSize, player.getZ() / windGustSize); //occurrence amount
 
         //multiply by intensity factor (alter by multiplier if raining)
-        noise *= player.level.isRaining() ? windRainingMultiplier * windFrequency : windFrequency;
+        noise *= player.level().isRaining() ? windRainingMultiplier * windFrequency : windFrequency;
 
         //stabilize somewhat depending on velocity
         double velocity = Math.sqrt(Math.pow(player.getDeltaMovement().x, 2) + Math.pow(player.getDeltaMovement().z, 2)); //player's velocity

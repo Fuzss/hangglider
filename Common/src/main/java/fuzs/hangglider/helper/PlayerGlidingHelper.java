@@ -24,7 +24,7 @@ public class PlayerGlidingHelper {
      */
     public static boolean isAllowedToGlide(Player player) {
         // delta movement is not synced to remote players, so this is always false for those, but we just update their animation via mixin
-        return !player.isOnGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION) && !player.getAbilities().flying && !player.isInWater() && player.getDeltaMovement().y < 0;
+        return !player.onGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION) && !player.getAbilities().flying && !player.isInWater() && player.getDeltaMovement().y < 0;
     }
 
     /**
@@ -56,7 +56,7 @@ public class PlayerGlidingHelper {
     }
 
     public static void setGliderDeployed(Player player, boolean gliderDeployed) {
-        if (player.level.isClientSide) return;
+        if (player.level().isClientSide) return;
         ModRegistry.GLIDING_CAPABILITY.maybeGet(player).ifPresent(capability -> {
             boolean wasGliderDeployed = capability.isGliderDeployed();
             capability.setGliderDeployed(gliderDeployed);
@@ -71,7 +71,7 @@ public class PlayerGlidingHelper {
     }
 
     public static void setGliding(Player player, boolean gliding) {
-        if (player.level.isClientSide) return;
+        if (player.level().isClientSide) return;
         ModRegistry.GLIDING_CAPABILITY.maybeGet(player).ifPresent(capability -> {
             boolean wasGliding = capability.isGliding();
             capability.setGliding(gliding);

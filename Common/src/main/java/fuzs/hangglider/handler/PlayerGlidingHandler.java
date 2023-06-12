@@ -27,7 +27,7 @@ public class PlayerGlidingHandler {
 
                     handleGlidingMovement(player, stack, glider);
 
-                    if (!player.level.isClientSide) {
+                    if (!player.level().isClientSide) {
 
                         handleGliderDurability(player, stack, glider);
                     }

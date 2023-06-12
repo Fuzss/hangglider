@@ -30,5 +30,6 @@
     "recipes": [
       "hangglider:reinforced_hang_glider_smithing_transform"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

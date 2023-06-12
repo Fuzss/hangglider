@@ -30,5 +30,6 @@
     "recipes": [
       "hangglider:hang_glider"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
