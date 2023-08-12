@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#@#"
+  ],
+  "key": {
+    "#": {
+      "item": "hangglider:glider_wing"
+    },
+    "@": {
+      "item": "hangglider:glider_framework"
+    }
+  },
+  "result": {
+    "item": "hangglider:hang_glider"
+  }
+}

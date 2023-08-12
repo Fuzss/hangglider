@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "hangglider:reinforced_hang_glider"
+    ]
+  },
+  "criteria": {
+    "has_hang_glider_and_elytra": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "hangglider:hang_glider",
+              "minecraft:elytra"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "hangglider:reinforced_hang_glider"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_hang_glider_and_elytra",
+      "has_the_recipe"
+    ]
+  ]
+}

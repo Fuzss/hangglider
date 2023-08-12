@@ -1,0 +1,17 @@
+{
+  "type": "hangglider:copy_tag_shapeless_recipe",
+  "ingredients": [
+    {
+      "item": "hangglider:hang_glider"
+    },
+    {
+      "item": "minecraft:elytra"
+    }
+  ],
+  "result": {
+    "item": "hangglider:reinforced_hang_glider"
+  },
+  "copy_from": {
+    "item": "hangglider:hang_glider"
+  }
+}
