@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog].
 
+## [v8.0.1-1.20.1] - 2023-08-18
+### Changed
+- Changed glider recipe to no longer require phantom membrane
+### Fixed
+- Fixed being kicked for flying while gliding on multiplayer servers
+
 ## [v8.0.0-1.20.1] - 2023-06-27
 - Ported to Minecraft 1.20.1
 

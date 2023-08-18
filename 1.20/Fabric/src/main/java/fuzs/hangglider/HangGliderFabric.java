@@ -8,6 +8,6 @@ public class HangGliderFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        ModConstructor.construct(HangGlider.MOD_ID, HangGlider::new, ContentRegistrationFlags.LEGACY_SMITHING);
+        ModConstructor.construct(HangGlider.MOD_ID, HangGlider::new, ContentRegistrationFlags.COPY_TAG_RECIPES);
     }
 }

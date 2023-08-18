@@ -3,8 +3,10 @@ package fuzs.hangglider.handler;
 import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.config.ServerConfig;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
+import fuzs.hangglider.mixin.accessor.ServerGamePacketListenerImplAccessor;
 import fuzs.hangglider.wind.WindHelper;
 import fuzs.hangglider.world.item.GliderItem;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ElytraItem;
@@ -23,13 +25,15 @@ public class PlayerGlidingHandler {
                 if (PlayerGlidingHelper.isAllowedToGlide(player)) {
 
                     PlayerGlidingHelper.setGliding(player, true);
-                    ServerConfig.GliderConfig glider = ((GliderItem) stack.getItem()).getGliderMaterialSettings();
+                    ServerConfig.GliderConfig config = ((GliderItem) stack.getItem()).getGliderMaterialSettings();
 
-                    handleGlidingMovement(player, stack, glider);
+                    handleGlidingMovement(player, stack, config);
 
                     if (!player.level().isClientSide) {
 
-                        handleGliderDurability(player, stack, glider);
+                        handleGliderDurability(player, stack, config);
+                        ((ServerGamePacketListenerImplAccessor) ((ServerPlayer) player).connection).hangglider$setAboveGroundTickCount(0);
+                        ((ServerGamePacketListenerImplAccessor) ((ServerPlayer) player).connection).hangglider$setAboveGroundVehicleTickCount(0);
                     }
 
                     resetClientAnimations(player);

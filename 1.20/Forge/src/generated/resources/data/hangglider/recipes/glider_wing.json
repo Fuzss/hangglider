@@ -2,20 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:leather"
-    },
-    "P": {
-      "item": "minecraft:phantom_membrane"
-    },
+    "#": [
+      {
+        "item": "minecraft:leather"
+      },
+      {
+        "item": "minecraft:rabbit_hide"
+      }
+    ],
     "S": {
       "item": "minecraft:stick"
     }
   },
   "pattern": [
-    " SP",
-    "SP#",
-    "P##"
+    "  S",
+    " S#",
+    "S##"
   ],
   "result": {
     "item": "hangglider:glider_wing"

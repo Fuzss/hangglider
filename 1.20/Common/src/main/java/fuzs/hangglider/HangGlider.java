@@ -4,11 +4,7 @@ import fuzs.hangglider.config.ClientConfig;
 import fuzs.hangglider.config.ServerConfig;
 import fuzs.hangglider.handler.PlayerGlidingHandler;
 import fuzs.hangglider.init.ModRegistry;
-import fuzs.hangglider.proxy.ClientProxy;
-import fuzs.hangglider.proxy.Proxy;
-import fuzs.hangglider.proxy.ServerProxy;
 import fuzs.puzzleslib.api.config.v3.ConfigHolder;
-import fuzs.puzzleslib.api.core.v1.DistTypeExecutor;
 import fuzs.puzzleslib.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.api.core.v1.context.CreativeModeTabContext;
 import fuzs.puzzleslib.api.event.v1.entity.player.PlayerTickEvents;
@@ -23,8 +19,6 @@ public class HangGlider implements ModConstructor {
     public static final String MOD_NAME = "Hang Glider";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
-    @SuppressWarnings("Convert2MethodRef")
-    public static final Proxy PROXY = DistTypeExecutor.getForDistType(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
     public static final ConfigHolder CONFIG = ConfigHolder.builder(MOD_ID).client(ClientConfig.class).server(ServerConfig.class);
 
     @Override

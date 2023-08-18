@@ -3,6 +3,7 @@ package fuzs.hangglider.world.item;
 import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.config.ServerConfig;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
+import fuzs.hangglider.proxy.Proxy;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -30,7 +31,7 @@ public class GliderItem extends Item {
 
         if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ElytraItem) {
 
-            HangGlider.PROXY.addElytraWidget();
+            Proxy.INSTANCE.addElytraWidget();
         } else if (PlayerGlidingHelper.isValidGlider(stack)) {
 
             PlayerGlidingHelper.setGliderDeployed(player, !PlayerGlidingHelper.isGliderDeployed(player));

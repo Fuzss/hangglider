@@ -6,7 +6,8 @@
   "refmap": "hangglider.refmap.json",
   "plugin": "fuzs.hangglider.mixin.ModMixinConfigPlugin",
   "mixins": [
-    "PlayerMixin"
+    "PlayerMixin",
+    "accessor.ServerGamePacketListenerImplAccessor"
   ],
   "client": [
     "client.PlayerItemInHandLayerMixin",

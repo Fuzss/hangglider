@@ -1,9 +1,9 @@
-// 1.20.1	2023-06-27T12:31:08.62595	Recipes
+// 1.20.1	2023-08-18T08:28:41.691027	Recipes
 cc04d8ac12698a42cd6191cce0135a824cdd7834 data/hangglider/advancements/recipes/tools/glider_framework.json
 f8b390e840f146957a949da28f2f9ff4a99f0629 data/hangglider/advancements/recipes/tools/glider_wing.json
 72eef1671d7b2536a525100f2797460c2daece58 data/hangglider/advancements/recipes/tools/hang_glider.json
-5b6000ec3c6f68ebcf163dac03ba0b7b83be417d data/hangglider/advancements/recipes/tools/reinforced_hang_glider_smithing_transform.json
+98edf3c951e2079f0fa57b5920d40b03da6d083a data/hangglider/advancements/recipes/tools/reinforced_hang_glider.json
 aaecbf32d1e78e7bcb4a170f1826f73ea67ef1b4 data/hangglider/recipes/glider_framework.json
-8d1caf06a0a162a09053fc377726f338fa0915e4 data/hangglider/recipes/glider_wing.json
+e4421132a5ed45c9328668f56a12c29f62a8bd15 data/hangglider/recipes/glider_wing.json
 10ed39cf55146dba69c0a77b723f1701a4c07b20 data/hangglider/recipes/hang_glider.json
-0dcb4bc3bf1aa79e0cb7294385ef205ff02f991e data/hangglider/recipes/reinforced_hang_glider_smithing_transform.json
+84084014ad979724d97ae67df8fde8c0b482cc86 data/hangglider/recipes/reinforced_hang_glider.json
