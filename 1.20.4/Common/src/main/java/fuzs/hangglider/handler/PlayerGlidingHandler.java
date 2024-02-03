@@ -4,14 +4,16 @@ import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.config.ServerConfig;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
 import fuzs.hangglider.mixin.accessor.ServerGamePacketListenerImplAccessor;
-import fuzs.hangglider.wind.WindHelper;
 import fuzs.hangglider.world.item.GliderItem;
+import fuzs.hangglider.world.wind.WindHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.Objects;
 
 public class PlayerGlidingHandler {
 
@@ -99,7 +101,9 @@ public class PlayerGlidingHandler {
 
             stack.hurtAndBreak(1, player, brokenStack -> {
 
-                brokenStack.broadcastBreakEvent(PlayerGlidingHelper.getGliderHoldingHand(player).orElseThrow(() -> new IllegalStateException("No valid glider held in hand")));
+                EquipmentSlot equipmentSlot = PlayerGlidingHelper.getGliderHoldingHand(player);
+                Objects.requireNonNull(equipmentSlot, "equipment slot is null");
+                brokenStack.broadcastBreakEvent(equipmentSlot);
             });
         }
     }

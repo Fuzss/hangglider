@@ -14,18 +14,26 @@ import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
 import fuzs.puzzleslib.api.client.core.v1.context.ItemModelPropertiesContext;
 import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
 import fuzs.puzzleslib.api.client.core.v1.context.LivingEntityRenderLayersContext;
-import fuzs.puzzleslib.api.client.event.v1.*;
+import fuzs.puzzleslib.api.client.event.v1.ClientTickEvents;
+import fuzs.puzzleslib.api.client.event.v1.entity.player.ComputeFovModifierCallback;
+import fuzs.puzzleslib.api.client.event.v1.renderer.ComputeCameraAnglesCallback;
+import fuzs.puzzleslib.api.client.event.v1.renderer.RenderGuiCallback;
+import fuzs.puzzleslib.api.client.event.v1.renderer.RenderHandCallback;
+import fuzs.puzzleslib.api.client.event.v1.renderer.RenderPlayerEvents;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class HangGliderClient implements ClientModConstructor {
+    public static final ResourceLocation ITEM_PROPERTY_DEPLOYED = HangGlider.id("deployed");
+    public static final ResourceLocation ITEM_PROPERTY_BROKEN = HangGlider.id("broken");
 
     @Override
     public void onConstructMod() {
@@ -49,19 +57,30 @@ public class HangGliderClient implements ClientModConstructor {
     }
 
     @Override
-    public void onRegisterLivingEntityRenderLayers(LivingEntityRenderLayersContext context) {
-        context.registerRenderLayer(EntityType.PLAYER, (RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderLayerParent, EntityRendererProvider.Context context1) -> {
-            return new GliderLayer(renderLayerParent, context1.getModelSet());
-        });
+    public void onRegisterItemModelProperties(ItemModelPropertiesContext context) {
+        context.registerItemProperty(ITEM_PROPERTY_DEPLOYED,
+                (ItemStack itemStack, ClientLevel clientLevel, LivingEntity livingEntity, int i) -> {
+                    return livingEntity instanceof Player player && PlayerGlidingHelper.isValidGlider(itemStack) && PlayerGlidingHelper.isGliderDeployed(
+                            player) && PlayerGlidingHelper.getGliderInHand(player) == itemStack ? 1.0F : 0.0F;
+                },
+                ModRegistry.HANG_GLIDER_ITEM.value(),
+                ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value()
+        );
+        context.registerItemProperty(ITEM_PROPERTY_BROKEN,
+                (ItemStack itemStack, ClientLevel clientLevel, LivingEntity livingEntity, int i) -> {
+                    return !PlayerGlidingHelper.isValidGlider(itemStack) ? 1.0F : 0.0F;
+                },
+                ModRegistry.HANG_GLIDER_ITEM.value(),
+                ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value()
+        );
     }
 
     @Override
-    public void onRegisterItemModelProperties(ItemModelPropertiesContext context) {
-        context.registerItemProperty(HangGlider.id("deployed"), (ItemStack itemStack, ClientLevel clientLevel, LivingEntity livingEntity, int i) -> {
-            return livingEntity instanceof Player player && PlayerGlidingHelper.isValidGlider(itemStack) && PlayerGlidingHelper.isGliderDeployed(player) && PlayerGlidingHelper.getGliderInHand(player) == itemStack ? 1.0F : 0.0F;
-        }, ModRegistry.HANG_GLIDER_ITEM.get(), ModRegistry.REINFORCED_HANG_GLIDER_ITEM.get());
-        context.registerItemProperty(HangGlider.id("broken"), (ItemStack itemStack, ClientLevel clientLevel, LivingEntity livingEntity, int i) -> {
-            return !PlayerGlidingHelper.isValidGlider(itemStack) ? 1.0F : 0.0F;
-        }, ModRegistry.HANG_GLIDER_ITEM.get(), ModRegistry.REINFORCED_HANG_GLIDER_ITEM.get());
+    public void onRegisterLivingEntityRenderLayers(LivingEntityRenderLayersContext context) {
+        context.registerRenderLayer(EntityType.PLAYER,
+                (RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderLayerParent, EntityRendererProvider.Context context1) -> {
+                    return new GliderLayer(renderLayerParent, context1.getModelSet());
+                }
+        );
     }
 }

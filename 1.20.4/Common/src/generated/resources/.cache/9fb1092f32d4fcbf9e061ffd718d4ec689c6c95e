@@ -1,0 +1,9 @@
+// 1.20.4	2024-02-03T09:23:23.224377	Recipes
+b485bdc098b3b1330e26a0ee78ec335fd826a279 data/hangglider/advancements/recipes/tools/glider_framework.json
+b1c9f35a1dcfe48c55a80ad6218ba3f66d940d9b data/hangglider/advancements/recipes/tools/glider_wing.json
+7cbc84247c1f3b8a48438992fa68123ead1ae49f data/hangglider/advancements/recipes/tools/hang_glider.json
+738fbed7498895a41a632a0721d4bb1ee9095103 data/hangglider/advancements/recipes/tools/reinforced_hang_glider.json
+09c17ae237e6d2800e74b7a9e53411d51c80b288 data/hangglider/recipes/glider_framework.json
+14fa9ba2ab749a579ed0eda5d4da9e16b07ae539 data/hangglider/recipes/glider_wing.json
+78ff87b3fc9e300c0461b63548dde7ae8596ec95 data/hangglider/recipes/hang_glider.json
+84084014ad979724d97ae67df8fde8c0b482cc86 data/hangglider/recipes/reinforced_hang_glider.json
