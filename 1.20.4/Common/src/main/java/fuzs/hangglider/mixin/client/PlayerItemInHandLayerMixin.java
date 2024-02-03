@@ -1,7 +1,7 @@
 package fuzs.hangglider.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import fuzs.hangglider.helper.PlayerGlidingHelper;
+import fuzs.hangglider.init.ModRegistry;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
@@ -29,6 +29,6 @@ abstract class PlayerItemInHandLayerMixin<T extends Player, M extends EntityMode
 
     @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
     protected void renderArmWithItem(LivingEntity livingEntity, ItemStack itemStack, ItemDisplayContext transformType, HumanoidArm arm, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback) {
-        if (livingEntity instanceof Player player && PlayerGlidingHelper.isGliding(player)) callback.cancel();
+        if (livingEntity instanceof Player player && ModRegistry.GLIDING_CAPABILITY.get(player).isGliding()) callback.cancel();
     }
 }

@@ -7,3 +7,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v20.4.0-1.20.4] - 2024-02-02
 - Port to Minecraft 1.20.4
 - Port to NeoForge
+### Changed
+- Gliders are now fully data-driven, any item can be made a glider by being added to `hangglider:hang_gliders` or `hangglider:reinforced_hang_gliders`

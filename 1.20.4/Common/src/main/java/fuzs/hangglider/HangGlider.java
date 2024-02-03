@@ -2,12 +2,14 @@ package fuzs.hangglider;
 
 import fuzs.hangglider.config.ClientConfig;
 import fuzs.hangglider.config.ServerConfig;
+import fuzs.hangglider.handler.GliderActivationHandler;
 import fuzs.hangglider.handler.PlayerGlidingHandler;
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.config.v3.ConfigHolder;
 import fuzs.puzzleslib.api.core.v1.ContentRegistrationFlags;
 import fuzs.puzzleslib.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.api.core.v1.context.CreativeModeTabContext;
+import fuzs.puzzleslib.api.event.v1.entity.player.PlayerInteractEvents;
 import fuzs.puzzleslib.api.event.v1.entity.player.PlayerTickEvents;
 import fuzs.puzzleslib.api.item.v2.CreativeModeTabConfigurator;
 import net.minecraft.resources.ResourceLocation;
@@ -32,6 +34,7 @@ public class HangGlider implements ModConstructor {
 
     private static void registerHandlers() {
         PlayerTickEvents.END.register(PlayerGlidingHandler::onPlayerTick$End);
+        PlayerInteractEvents.USE_ITEM.register(GliderActivationHandler::onUseItem);
     }
 
     @Override

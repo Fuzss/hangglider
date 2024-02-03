@@ -1,6 +1,7 @@
 package fuzs.hangglider.neoforge;
 
 import fuzs.hangglider.HangGlider;
+import fuzs.hangglider.data.ModItemTagProvider;
 import fuzs.hangglider.data.ModRecipeProvider;
 import fuzs.hangglider.data.client.ModLanguageProvider;
 import fuzs.hangglider.data.client.ModModelProvider;
@@ -19,6 +20,7 @@ public class HangGliderNeoForge {
     public static void onConstructMod(final FMLConstructModEvent evt) {
         ModConstructor.construct(HangGlider.MOD_ID, HangGlider::new);
         DataProviderHelper.registerDataProviders(HangGlider.MOD_ID,
+                ModItemTagProvider::new,
                 ModModelProvider::new,
                 ModLanguageProvider::new,
                 ModRecipeProvider::new,

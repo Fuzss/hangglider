@@ -2,7 +2,7 @@ package fuzs.hangglider.client.handler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import fuzs.hangglider.helper.PlayerGlidingHelper;
+import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.event.v1.core.EventResult;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -18,7 +18,7 @@ public class GlidingCrouchHandler {
 
     public static EventResult onRenderPlayer$Pre(Player player, PlayerRenderer renderer, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
 
-        if (PlayerGlidingHelper.isGliding(player)) {
+        if (ModRegistry.GLIDING_CAPABILITY.get(player).isGliding()) {
 
             PlayerModel<AbstractClientPlayer> model = renderer.getModel();
             model.leftArmPose = model.rightArmPose = HumanoidModel.ArmPose.EMPTY;
@@ -55,7 +55,7 @@ public class GlidingCrouchHandler {
             poseStack.popPose();
         }
 
-        if (PlayerGlidingHelper.isGliding(player)) {
+        if (ModRegistry.GLIDING_CAPABILITY.get(player).isGliding()) {
 
             if (player.isCrouching()) {
                 

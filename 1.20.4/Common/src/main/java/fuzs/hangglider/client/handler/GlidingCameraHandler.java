@@ -3,7 +3,7 @@ package fuzs.hangglider.client.handler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.config.ClientConfig;
-import fuzs.hangglider.helper.PlayerGlidingHelper;
+import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.event.v1.core.EventResult;
 import fuzs.puzzleslib.api.event.v1.data.MutableFloat;
 import net.minecraft.client.Camera;
@@ -40,7 +40,7 @@ public class GlidingCameraHandler {
 
     private static void setThirdPersonGliding(Player player, Options options) {
 
-        if (PlayerGlidingHelper.isGliding(player)) {
+        if (ModRegistry.GLIDING_CAPABILITY.get(player).isGliding()) {
 
             if (oldCameraType == null) {
 
@@ -63,7 +63,7 @@ public class GlidingCameraHandler {
 
     private static void updateGlidingRotation(Player player) {
 
-        if (PlayerGlidingHelper.isGliding(player)) {
+        if (ModRegistry.GLIDING_CAPABILITY.get(player).isGliding()) {
 
             // code from PlayerRenderer#applyRotations which is used there for rotating player model while flying
             Vec3 vector3d = player.getViewVector(1.0F);
@@ -99,6 +99,6 @@ public class GlidingCameraHandler {
     }
 
     public static EventResult onRenderHand(Player player, InteractionHand hand, ItemStack stack, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, float partialTick, float interpolatedPitch, float swingProgress, float equipProgress) {
-        return PlayerGlidingHelper.isGliding(player) ? EventResult.INTERRUPT : EventResult.PASS;
+        return ModRegistry.GLIDING_CAPABILITY.get(player).isGliding() ? EventResult.INTERRUPT : EventResult.PASS;
     }
 }

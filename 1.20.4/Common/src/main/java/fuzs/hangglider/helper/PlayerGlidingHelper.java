@@ -1,18 +1,14 @@
 package fuzs.hangglider.helper;
 
-import fuzs.hangglider.capability.GlidingCapability;
+import fuzs.hangglider.HangGlider;
+import fuzs.hangglider.config.ServerConfig;
 import fuzs.hangglider.init.ModRegistry;
-import fuzs.hangglider.world.item.GliderItem;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.Optional;
-import java.util.stream.Stream;
 
 public class PlayerGlidingHelper {
 
@@ -26,7 +22,16 @@ public class PlayerGlidingHelper {
      */
     public static boolean isAllowedToGlide(Player player) {
         // delta movement is not synced to remote players, so this is always false for those, but we just update their animation via mixin
-        return !player.onGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION) && !player.getAbilities().flying && !player.isInWater() && player.getDeltaMovement().y < 0;
+        return !player.onGround() &&
+                !player.isPassenger() &&
+                !player.hasEffect(MobEffects.LEVITATION) &&
+                !player.getAbilities().flying &&
+                !player.isInWater() &&
+                player.getDeltaMovement().y < 0;
+    }
+
+    public static boolean isWearingElytra(Player player) {
+        return player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ElytraItem;
     }
 
     /**
@@ -37,7 +42,7 @@ public class PlayerGlidingHelper {
      * @return - true if the item is an unbroken glider, false otherwise
      */
     public static boolean isValidGlider(ItemStack stack) {
-        return stack.getItem() instanceof GliderItem && ElytraItem.isFlyEnabled(stack);
+        return stack.is(ModRegistry.HANG_GLIDERS_ITEM_TAG) && (ElytraItem.isFlyEnabled(stack) || !stack.isDamageableItem());
     }
 
     /**
@@ -48,10 +53,16 @@ public class PlayerGlidingHelper {
      * @return - the first glider found (as an itemstack), null otherwise
      */
     public static ItemStack getGliderInHand(Player player) {
-        for (InteractionHand interactionHand : InteractionHand.values()) {
-            ItemStack itemInHand = player.getItemInHand(interactionHand);
-            if (itemInHand.getItem() instanceof GliderItem) {
-                return itemInHand;
+
+        if (ModRegistry.GLIDING_CAPABILITY.get(player).isGliderDeployed()) {
+
+            for (InteractionHand interactionHand : InteractionHand.values()) {
+
+                ItemStack itemInHand = player.getItemInHand(interactionHand);
+                if (isValidGlider(itemInHand)) {
+
+                    return itemInHand;
+                }
             }
         }
 
@@ -61,7 +72,7 @@ public class PlayerGlidingHelper {
     public static EquipmentSlot getGliderHoldingHand(Player player) {
         for (InteractionHand interactionHand : InteractionHand.values()) {
             ItemStack itemInHand = player.getItemInHand(interactionHand);
-            if (itemInHand.getItem() instanceof GliderItem) {
+            if (itemInHand.is(ModRegistry.HANG_GLIDERS_ITEM_TAG)) {
                 return interactionHand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
             }
         }
@@ -69,23 +80,13 @@ public class PlayerGlidingHelper {
         return null;
     }
 
-    public static boolean isGliderDeployed(Player player) {
-        return ModRegistry.GLIDING_CAPABILITY.get(player).isGliderDeployed();
-    }
-
-    public static void setGliderDeployed(Player player, boolean gliderDeployed) {
-        if (!player.level().isClientSide) {
-            ModRegistry.GLIDING_CAPABILITY.get(player).setGliderDeployed(gliderDeployed);
-        }
-    }
-
-    public static boolean isGliding(Player player) {
-        return ModRegistry.GLIDING_CAPABILITY.get(player).isGliding();
-    }
-
-    public static void setGliding(Player player, boolean gliding) {
-        if (!player.level().isClientSide) {
-            ModRegistry.GLIDING_CAPABILITY.get(player).setGliding(gliding);
+    public static ServerConfig.GliderConfig getGliderMaterialSettings(ItemStack itemStack) {
+        if (itemStack.is(ModRegistry.REINFORCED_HANG_GLIDERS_ITEM_TAG)) {
+            return HangGlider.CONFIG.get(ServerConfig.class).reinforcedHangGlider;
+        } else if (itemStack.is(ModRegistry.HANG_GLIDERS_ITEM_TAG)) {
+            return HangGlider.CONFIG.get(ServerConfig.class).hangGlider;
+        } else {
+            throw new IllegalArgumentException(itemStack + " is no hang glider");
         }
     }
 }

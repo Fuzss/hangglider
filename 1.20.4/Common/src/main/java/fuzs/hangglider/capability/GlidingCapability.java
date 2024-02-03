@@ -35,10 +35,12 @@ public class GlidingCapability extends CapabilityComponent<Player> {
      * @param gliding - True if the player is gliding, False otherwise.
      */
     public void setGliding(boolean gliding) {
-        gliding &= this.gliderDeployed;
-        if (this.gliding != gliding) {
-            this.gliding = gliding;
-            this.setChanged();
+        if (!this.getHolder().level().isClientSide) {
+            gliding &= this.gliderDeployed;
+            if (this.gliding != gliding) {
+                this.gliding = gliding;
+                this.setChanged();
+            }
         }
     }
 
@@ -57,12 +59,14 @@ public class GlidingCapability extends CapabilityComponent<Player> {
      * @param gliderDeployed - True if the glider is deployed, False otherwise.
      */
     public void setGliderDeployed(boolean gliderDeployed) {
-        if (this.gliderDeployed != gliderDeployed) {
-            this.gliderDeployed = gliderDeployed;
-            if (!gliderDeployed) {
-                this.gliding = false;
+        if (!this.getHolder().level().isClientSide) {
+            if (this.gliderDeployed != gliderDeployed) {
+                this.gliderDeployed = gliderDeployed;
+                if (!gliderDeployed) {
+                    this.gliding = false;
+                }
+                this.setChanged();
             }
-            this.setChanged();
         }
     }
 

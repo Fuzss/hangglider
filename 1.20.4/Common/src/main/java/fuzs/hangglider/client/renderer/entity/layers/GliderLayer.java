@@ -1,12 +1,12 @@
 package fuzs.hangglider.client.renderer.entity.layers;
 
+import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.client.init.ModClientRegistry;
 import fuzs.hangglider.client.model.GliderModel;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
-import fuzs.hangglider.init.ModRegistry;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -23,11 +23,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Map;
 
 public class GliderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
-    private static final Map<Item, ResourceLocation> TEXTURE_LOCATIONS = Map.of(ModRegistry.HANG_GLIDER_ITEM.value(),
-            HangGlider.id("textures/models/glider/hang_glider.png"),
-            ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value(),
-            HangGlider.id("textures/models/glider/reinforced_hang_glider.png")
-    );
+    private static final ResourceLocation TEXTURE_LOCATION = HangGlider.id("textures/models/glider/hang_glider.png");
+    private static final Map<Item, ResourceLocation> TEXTURE_LOCATION_OVERRIDES = Maps.newLinkedHashMapWithExpectedSize(
+            1);
 
     private final GliderModel<AbstractClientPlayer> gliderModel;
 
@@ -39,18 +37,22 @@ public class GliderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
 
-        ItemStack stack = PlayerGlidingHelper.isGliderDeployed(player) ?
-                PlayerGlidingHelper.getGliderInHand(player) :
-                ItemStack.EMPTY;
-
-        if (!stack.isEmpty()) {
+        ItemStack itemStack = PlayerGlidingHelper.getGliderInHand(player);
+        if (!itemStack.isEmpty()) {
 
             poseStack.pushPose();
 
             this.getParentModel().copyPropertiesTo(this.gliderModel);
 
-            RenderType renderType = RenderType.armorCutoutNoCull(TEXTURE_LOCATIONS.get(stack.getItem()));
-            VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer, renderType, false, stack.hasFoil());
+            ResourceLocation resourceLocation = TEXTURE_LOCATION_OVERRIDES.getOrDefault(itemStack.getItem(),
+                    TEXTURE_LOCATION
+            );
+            RenderType renderType = RenderType.armorCutoutNoCull(resourceLocation);
+            VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer,
+                    renderType,
+                    false,
+                    itemStack.hasFoil()
+            );
             this.gliderModel.renderToBuffer(poseStack,
                     vertexConsumer,
                     packedLight,
@@ -63,5 +65,9 @@ public class GliderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 
             poseStack.popPose();
         }
+    }
+
+    public static void registerGliderTexture(Item item, ResourceLocation resourceLocation) {
+        TEXTURE_LOCATION_OVERRIDES.putIfAbsent(item, resourceLocation);
     }
 }

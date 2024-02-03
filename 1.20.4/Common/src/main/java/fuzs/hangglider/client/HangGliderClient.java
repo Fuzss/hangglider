@@ -52,6 +52,13 @@ public class HangGliderClient implements ClientModConstructor {
     }
 
     @Override
+    public void onClientSetup() {
+        GliderLayer.registerGliderTexture(ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value(),
+                HangGlider.id("textures/models/glider/reinforced_hang_glider.png")
+        );
+    }
+
+    @Override
     public void onRegisterLayerDefinitions(LayerDefinitionsContext context) {
         context.registerLayerDefinition(ModClientRegistry.GLIDER, GliderModel::createLayer);
     }
@@ -60,8 +67,8 @@ public class HangGliderClient implements ClientModConstructor {
     public void onRegisterItemModelProperties(ItemModelPropertiesContext context) {
         context.registerItemProperty(ITEM_PROPERTY_DEPLOYED,
                 (ItemStack itemStack, ClientLevel clientLevel, LivingEntity livingEntity, int i) -> {
-                    return livingEntity instanceof Player player && PlayerGlidingHelper.isValidGlider(itemStack) && PlayerGlidingHelper.isGliderDeployed(
-                            player) && PlayerGlidingHelper.getGliderInHand(player) == itemStack ? 1.0F : 0.0F;
+                    return livingEntity instanceof Player player &&
+                            PlayerGlidingHelper.getGliderInHand(player) == itemStack ? 1.0F : 0.0F;
                 },
                 ModRegistry.HANG_GLIDER_ITEM.value(),
                 ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value()

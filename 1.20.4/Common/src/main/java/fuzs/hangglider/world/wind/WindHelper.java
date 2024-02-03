@@ -2,8 +2,8 @@ package fuzs.hangglider.world.wind;
 
 import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.config.ServerConfig;
+import fuzs.hangglider.helper.PlayerGlidingHelper;
 import fuzs.hangglider.world.wind.generator.OpenSimplexNoise;
-import fuzs.hangglider.world.item.GliderItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -21,9 +21,9 @@ public class WindHelper {
      * Affected by a variety of things, from player height to glider durability to weather, etc.
      *
      * @param player - the player to move around
-     * @param glider - the hang glider item
+     * @param itemStack - the hang glider item
      */
-    public static void applyWind(Player player, ItemStack glider) {
+    public static void applyWind(Player player, ItemStack itemStack) {
         ServerConfig config = HangGlider.CONFIG.get(ServerConfig.class);
 
         if (!config.wind.allowWind) return; //if no wind, then do nothing
@@ -52,14 +52,14 @@ public class WindHelper {
         double wind = speedStabilized * height;
 
         //apply durability modifier
-        double additionalDamagePercentage = glider.isDamaged() ? config.wind.durabilityMultiplier * ((double)glider.getDamageValue() / (glider.getMaxDamage())) : 0; //1.x where x is the percent of durability used
+        double additionalDamagePercentage = itemStack.isDamaged() ? config.wind.durabilityMultiplier * ((double)itemStack.getDamageValue() / (itemStack.getMaxDamage())) : 0; //1.x where x is the percent of durability used
         wind *= 1 + additionalDamagePercentage;
 
         //apply overall wind power multiplier
         wind *= windOverallPower;
 
         //apply tier specific wind power multiplier
-        wind *= ((GliderItem) glider.getItem()).getGliderMaterialSettings().windModifier;
+        wind *= PlayerGlidingHelper.getGliderMaterialSettings(itemStack).windModifier;
 
         //apply final rotation based on all the above
         player.setYRot((float) (player.getYRot() + wind));

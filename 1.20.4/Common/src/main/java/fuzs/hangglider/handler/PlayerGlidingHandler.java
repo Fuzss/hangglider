@@ -3,13 +3,12 @@ package fuzs.hangglider.handler;
 import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.config.ServerConfig;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
+import fuzs.hangglider.init.ModRegistry;
 import fuzs.hangglider.mixin.accessor.ServerGamePacketListenerImplAccessor;
-import fuzs.hangglider.world.item.GliderItem;
 import fuzs.hangglider.world.wind.WindHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
@@ -19,36 +18,33 @@ public class PlayerGlidingHandler {
 
     public static void onPlayerTick$End(Player player) {
 
-        if (PlayerGlidingHelper.isGliderDeployed(player)) {
+        ItemStack itemStack = PlayerGlidingHelper.getGliderInHand(player);
+        if (!itemStack.isEmpty() && !PlayerGlidingHelper.isWearingElytra(player)) {
 
-            ItemStack stack = PlayerGlidingHelper.getGliderInHand(player);
-            if (PlayerGlidingHelper.isValidGlider(stack) && !(player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ElytraItem)) {
+            if (PlayerGlidingHelper.isAllowedToGlide(player)) {
 
-                if (PlayerGlidingHelper.isAllowedToGlide(player)) {
+                ModRegistry.GLIDING_CAPABILITY.get(player).setGliding(true);
+                ServerConfig.GliderConfig config = PlayerGlidingHelper.getGliderMaterialSettings(itemStack);
 
-                    PlayerGlidingHelper.setGliding(player, true);
-                    ServerConfig.GliderConfig config = ((GliderItem) stack.getItem()).getGliderMaterialSettings();
+                handleGlidingMovement(player, itemStack, config);
 
-                    handleGlidingMovement(player, stack, config);
+                if (!player.level().isClientSide) {
 
-                    if (!player.level().isClientSide) {
-
-                        handleGliderDurability(player, stack, config);
-                        ((ServerGamePacketListenerImplAccessor) ((ServerPlayer) player).connection).hangglider$setAboveGroundTickCount(0);
-                        ((ServerGamePacketListenerImplAccessor) ((ServerPlayer) player).connection).hangglider$setAboveGroundVehicleTickCount(0);
-                    }
-
-                    resetClientAnimations(player);
-
-                    return;
+                    handleGliderDurability(player, itemStack, config);
+                    ((ServerGamePacketListenerImplAccessor) ((ServerPlayer) player).connection).hangglider$setAboveGroundTickCount(0);
+                    ((ServerGamePacketListenerImplAccessor) ((ServerPlayer) player).connection).hangglider$setAboveGroundVehicleTickCount(0);
                 }
-            } else {
 
-                PlayerGlidingHelper.setGliderDeployed(player, false);
+                resetClientAnimations(player);
+
+                return;
             }
+        } else {
+
+            ModRegistry.GLIDING_CAPABILITY.get(player).setGliderDeployed(false);
         }
 
-        PlayerGlidingHelper.setGliding(player, false);
+        ModRegistry.GLIDING_CAPABILITY.get(player).setGliding(false);
     }
 
     public static void resetClientAnimations(Player player) {
@@ -95,11 +91,11 @@ public class PlayerGlidingHandler {
         }
     }
 
-    private static void handleGliderDurability(Player player, ItemStack stack, ServerConfig.GliderConfig glider) {
+    private static void handleGliderDurability(Player player, ItemStack itemStack, ServerConfig.GliderConfig gliderMaterialSettings) {
 
-        if (glider.consumeDurability && player.getRandom().nextInt(glider.durabilityUseInterval) == 0) {
+        if (gliderMaterialSettings.consumeDurability && player.getRandom().nextInt(gliderMaterialSettings.durabilityUseInterval) == 0) {
 
-            stack.hurtAndBreak(1, player, brokenStack -> {
+            itemStack.hurtAndBreak(1, player, brokenStack -> {
 
                 EquipmentSlot equipmentSlot = PlayerGlidingHelper.getGliderHoldingHand(player);
                 Objects.requireNonNull(equipmentSlot, "equipment slot is null");
