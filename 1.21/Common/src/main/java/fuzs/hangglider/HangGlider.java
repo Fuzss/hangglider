@@ -9,6 +9,7 @@ import fuzs.puzzleslib.api.config.v3.ConfigHolder;
 import fuzs.puzzleslib.api.core.v1.ContentRegistrationFlags;
 import fuzs.puzzleslib.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.api.core.v1.context.CreativeModeTabContext;
+import fuzs.puzzleslib.api.core.v1.utility.ResourceLocationHelper;
 import fuzs.puzzleslib.api.event.v1.entity.player.PlayerInteractEvents;
 import fuzs.puzzleslib.api.event.v1.entity.player.PlayerTickEvents;
 import fuzs.puzzleslib.api.item.v2.CreativeModeTabConfigurator;
@@ -29,10 +30,10 @@ public class HangGlider implements ModConstructor {
     @Override
     public void onConstructMod() {
         ModRegistry.touch();
-        registerHandlers();
+        registerEventHandlers();
     }
 
-    private static void registerHandlers() {
+    private static void registerEventHandlers() {
         PlayerTickEvents.END.register(PlayerGlidingHandler::onPlayerTick$End);
         PlayerInteractEvents.USE_ITEM.register(GliderActivationHandler::onUseItem);
     }
@@ -51,10 +52,10 @@ public class HangGlider implements ModConstructor {
 
     @Override
     public ContentRegistrationFlags[] getContentRegistrationFlags() {
-        return new ContentRegistrationFlags[]{ContentRegistrationFlags.COPY_TAG_RECIPES};
+        return new ContentRegistrationFlags[]{ContentRegistrationFlags.COPY_RECIPES};
     }
 
     public static ResourceLocation id(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return ResourceLocationHelper.fromNamespaceAndPath(MOD_ID, path);
     }
 }

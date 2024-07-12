@@ -3,6 +3,7 @@ package fuzs.hangglider.data;
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.data.v2.AbstractRecipeProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
+import fuzs.puzzleslib.api.data.v2.recipes.CopyTagShapedRecipeBuilder;
 import fuzs.puzzleslib.api.data.v2.recipes.CopyTagShapelessRecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -41,11 +42,12 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                         has(ModRegistry.GLIDER_FRAMEWORK_ITEM.value())
                 )
                 .save(recipeOutput);
-        CopyTagShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value())
-                .requires(ModRegistry.HANG_GLIDER_ITEM.value())
-                .requires(Items.ELYTRA)
+        CopyTagShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value())
+                .define('#', Items.PHANTOM_MEMBRANE)
+                .define('@', ModRegistry.HANG_GLIDER_ITEM.value())
+                .pattern("#@#")
                 .copyFrom(ModRegistry.HANG_GLIDER_ITEM.value())
-                .unlockedBy(getHasName(Items.ELYTRA), has(Items.ELYTRA))
+                .unlockedBy(getHasName(ModRegistry.HANG_GLIDER_ITEM.value()), has(ModRegistry.HANG_GLIDER_ITEM.value()))
                 .save(recipeOutput);
     }
 }

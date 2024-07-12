@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_glider_framework": {
+    "has_iron_ingot": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "hangglider:glider_framework"
-            ]
+            "items": "minecraft:iron_ingot"
           }
         ]
       },
@@ -15,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "hangglider:hang_glider"
+        "recipe": "hangglider:glider_framework"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -23,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_glider_framework"
+      "has_iron_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
-      "hangglider:hang_glider"
+      "hangglider:glider_framework"
     ]
   }
 }

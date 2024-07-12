@@ -95,12 +95,9 @@ public class PlayerGlidingHandler {
 
         if (gliderMaterialSettings.consumeDurability && player.getRandom().nextInt(gliderMaterialSettings.durabilityUseInterval) == 0) {
 
-            itemStack.hurtAndBreak(1, player, brokenStack -> {
-
-                EquipmentSlot equipmentSlot = PlayerGlidingHelper.getGliderHoldingHand(player);
-                Objects.requireNonNull(equipmentSlot, "equipment slot is null");
-                brokenStack.broadcastBreakEvent(equipmentSlot);
-            });
+            EquipmentSlot equipmentSlot = PlayerGlidingHelper.getGliderHoldingHand(player);
+            Objects.requireNonNull(equipmentSlot, "equipment slot is null");
+            itemStack.hurtAndBreak(1, player, equipmentSlot);
         }
     }
 }

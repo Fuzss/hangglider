@@ -1,0 +1,22 @@
+{
+  "type": "hangglider:copy_components_shaped_recipe",
+  "category": "equipment",
+  "copy_from": {
+    "item": "hangglider:hang_glider"
+  },
+  "key": {
+    "#": {
+      "item": "minecraft:phantom_membrane"
+    },
+    "@": {
+      "item": "hangglider:hang_glider"
+    }
+  },
+  "pattern": [
+    "#@#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hangglider:reinforced_hang_glider"
+  }
+}

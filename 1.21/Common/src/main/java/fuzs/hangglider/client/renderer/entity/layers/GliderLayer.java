@@ -47,21 +47,11 @@ public class GliderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
             ResourceLocation resourceLocation = TEXTURE_LOCATION_OVERRIDES.getOrDefault(itemStack.getItem(),
                     TEXTURE_LOCATION
             );
-            RenderType renderType = RenderType.armorCutoutNoCull(resourceLocation);
             VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer,
-                    renderType,
-                    false,
+                    RenderType.armorCutoutNoCull(resourceLocation),
                     itemStack.hasFoil()
             );
-            this.gliderModel.renderToBuffer(poseStack,
-                    vertexConsumer,
-                    packedLight,
-                    OverlayTexture.NO_OVERLAY,
-                    1.0F,
-                    1.0F,
-                    1.0F,
-                    1.0F
-            );
+            this.gliderModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
 
             poseStack.popPose();
         }

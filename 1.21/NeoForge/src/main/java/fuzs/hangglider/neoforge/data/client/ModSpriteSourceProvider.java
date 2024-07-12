@@ -2,14 +2,14 @@ package fuzs.hangglider.neoforge.data.client;
 
 import fuzs.hangglider.client.handler.ElytraEquippedHandler;
 import fuzs.puzzleslib.neoforge.api.data.v2.client.AbstractSpriteSourceProvider;
-import fuzs.puzzleslib.neoforge.api.data.v2.core.ForgeDataProviderContext;
+import fuzs.puzzleslib.neoforge.api.data.v2.core.NeoForgeDataProviderContext;
 import net.minecraft.client.renderer.texture.atlas.sources.SingleFile;
 
 import java.util.Optional;
 
 public class ModSpriteSourceProvider extends AbstractSpriteSourceProvider {
 
-    public ModSpriteSourceProvider(ForgeDataProviderContext context) {
+    public ModSpriteSourceProvider(NeoForgeDataProviderContext context) {
         super(context);
     }
 

@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_elytra": {
+    "has_hang_glider": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:elytra"
-            ]
+            "items": "hangglider:hang_glider"
           }
         ]
       },
@@ -23,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_elytra"
+      "has_hang_glider"
     ]
   ],
   "rewards": {

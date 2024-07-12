@@ -10,10 +10,12 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -76,7 +78,7 @@ public class GlidingCameraHandler {
                 double d3 = vector3d1.x * vector3d.z - vector3d1.z * vector3d.x;
                 // fix Math#acos returning NaN when d2 > 1.0
                 float rotationDelta = (float) (Math.signum(d3) * Math.acos(Math.min(d2, 1.0)));
-                rotationDelta = rotationDelta / (float) (Math.PI) * 180.0F * 0.4F * (float) HangGlider.CONFIG.get(ClientConfig.class).glidingTiltAmount;
+                rotationDelta *= Mth.RAD_TO_DEG * 0.4F * (float) HangGlider.CONFIG.get(ClientConfig.class).glidingTiltAmount;
                 gliderRotationOld = gliderRotation;
                 gliderRotation += (rotationDelta - gliderRotation) * (float) HangGlider.CONFIG.get(ClientConfig.class).glidingTiltSpeed;
             }
@@ -98,7 +100,7 @@ public class GlidingCameraHandler {
         }
     }
 
-    public static EventResult onRenderHand(Player player, InteractionHand hand, ItemStack stack, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, float partialTick, float interpolatedPitch, float swingProgress, float equipProgress) {
+    public static EventResult onRenderHand(ItemInHandRenderer itemInHandRenderer, AbstractClientPlayer player, HumanoidArm humanoidArm, ItemStack itemStack, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLight, float partialTick, float interpolatedPitch, float swingProgress, float equipProgress) {
         return ModRegistry.GLIDING_CAPABILITY.get(player).isGliding() ? EventResult.INTERRUPT : EventResult.PASS;
     }
 }

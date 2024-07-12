@@ -2,6 +2,7 @@ package fuzs.hangglider.capability;
 
 import fuzs.hangglider.HangGlider;
 import fuzs.puzzleslib.api.capability.v3.data.CapabilityComponent;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 
@@ -71,14 +72,14 @@ public class GlidingCapability extends CapabilityComponent<Player> {
     }
 
     @Override
-    public void write(CompoundTag tag) {
-        tag.putBoolean(TAG_GLIDER_DEPLOYED, this.gliderDeployed);
-        tag.putBoolean(TAG_GLIDING, this.gliding);
+    public void write(CompoundTag compoundTag, HolderLookup.Provider registries) {
+        compoundTag.putBoolean(TAG_GLIDER_DEPLOYED, this.gliderDeployed);
+        compoundTag.putBoolean(TAG_GLIDING, this.gliding);
     }
 
     @Override
-    public void read(CompoundTag tag) {
-        this.gliderDeployed = tag.getBoolean(TAG_GLIDER_DEPLOYED);
-        this.gliding = tag.getBoolean(TAG_GLIDING);
+    public void read(CompoundTag compoundTag, HolderLookup.Provider registries) {
+        this.gliderDeployed = compoundTag.getBoolean(TAG_GLIDER_DEPLOYED);
+        this.gliding = compoundTag.getBoolean(TAG_GLIDING);
     }
 }

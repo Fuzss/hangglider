@@ -16,9 +16,9 @@ import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
 import fuzs.puzzleslib.api.client.core.v1.context.LivingEntityRenderLayersContext;
 import fuzs.puzzleslib.api.client.event.v1.ClientTickEvents;
 import fuzs.puzzleslib.api.client.event.v1.entity.player.ComputeFovModifierCallback;
+import fuzs.puzzleslib.api.client.event.v1.gui.RenderGuiCallback;
 import fuzs.puzzleslib.api.client.event.v1.renderer.ComputeCameraAnglesCallback;
-import fuzs.puzzleslib.api.client.event.v1.renderer.RenderGuiCallback;
-import fuzs.puzzleslib.api.client.event.v1.renderer.RenderHandCallback;
+import fuzs.puzzleslib.api.client.event.v1.renderer.RenderHandEvents;
 import fuzs.puzzleslib.api.client.event.v1.renderer.RenderPlayerEvents;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -37,17 +37,18 @@ public class HangGliderClient implements ClientModConstructor {
 
     @Override
     public void onConstructMod() {
-        registerHandlers();
+        registerEventHandlers();
     }
 
-    private static void registerHandlers() {
+    private static void registerEventHandlers() {
         ComputeFovModifierCallback.EVENT.register(FovModifierHandler::onComputeFovModifier);
         ClientTickEvents.END.register(GlidingCameraHandler::onEndClientTick);
         ClientTickEvents.END.register(ElytraEquippedHandler.INSTANCE::onClientTick$End);
         RenderGuiCallback.EVENT.register(ElytraEquippedHandler.INSTANCE::onRenderGui);
         RenderPlayerEvents.BEFORE.register(GlidingCrouchHandler::onRenderPlayer$Pre);
         RenderPlayerEvents.AFTER.register(GlidingCrouchHandler::onRenderPlayer$Post);
-        RenderHandCallback.EVENT.register(GlidingCameraHandler::onRenderHand);
+        RenderHandEvents.MAIN_HAND.register(GlidingCameraHandler::onRenderHand);
+        RenderHandEvents.OFF_HAND.register(GlidingCameraHandler::onRenderHand);
         ComputeCameraAnglesCallback.EVENT.register(GlidingCameraHandler::onComputeCameraRoll);
     }
 

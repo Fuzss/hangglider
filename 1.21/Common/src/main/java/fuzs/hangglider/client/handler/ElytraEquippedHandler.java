@@ -2,6 +2,7 @@ package fuzs.hangglider.client.handler;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import fuzs.hangglider.HangGlider;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -24,17 +25,17 @@ public class ElytraEquippedHandler {
         this.tickTime = 40;
     }
 
-    public void onRenderGui(Minecraft minecraft, GuiGraphics guiGraphics, float tickDelta, int screenWidth, int screenHeight) {
+    public void onRenderGui(Minecraft minecraft, GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
 
         if (this.tickTime > 0) {
 
-            int leftPos = (screenWidth - 16) / 2;
-            int topPos = screenHeight / 2 + 16;
+            int leftPos = (guiGraphics.guiWidth() - 16) / 2;
+            int topPos = guiGraphics.guiHeight() / 2 + 16;
             guiGraphics.renderItem(new ItemStack(Items.ELYTRA), leftPos, topPos);
 
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-            float alpha = (float) (Math.sin((this.tickTime - tickDelta) * 0.5) * 0.5 + 0.5);
+            float alpha = (float) (Math.sin((this.tickTime - deltaTracker.getGameTimeDeltaPartialTick(false)) * 0.5) * 0.5 + 0.5);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
             TextureAtlasSprite atlasSprite = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CROSS_TEXTURE_LOCATION);
             guiGraphics.blit(leftPos, topPos, 400, 16, 16, atlasSprite);

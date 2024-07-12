@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_leather": {
+    "has_glider_framework": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:leather"
-            ]
+            "items": "hangglider:glider_framework"
           }
         ]
       },
@@ -15,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "hangglider:glider_wing"
+        "recipe": "hangglider:hang_glider"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -23,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_leather"
+      "has_glider_framework"
     ]
   ],
   "rewards": {
     "recipes": [
-      "hangglider:glider_wing"
+      "hangglider:hang_glider"
     ]
   }
 }
