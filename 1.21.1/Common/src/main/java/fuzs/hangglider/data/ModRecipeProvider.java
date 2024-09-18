@@ -3,8 +3,7 @@ package fuzs.hangglider.data;
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.data.v2.AbstractRecipeProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
-import fuzs.puzzleslib.api.data.v2.recipes.CopyTagShapedRecipeBuilder;
-import fuzs.puzzleslib.api.data.v2.recipes.CopyTagShapelessRecipeBuilder;
+import fuzs.puzzleslib.api.data.v2.recipes.CopyComponentsShapedRecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
@@ -42,7 +41,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                         has(ModRegistry.GLIDER_FRAMEWORK_ITEM.value())
                 )
                 .save(recipeOutput);
-        CopyTagShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value())
+        CopyComponentsShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value())
                 .define('#', Items.PHANTOM_MEMBRANE)
                 .define('@', ModRegistry.HANG_GLIDER_ITEM.value())
                 .pattern("#@#")
