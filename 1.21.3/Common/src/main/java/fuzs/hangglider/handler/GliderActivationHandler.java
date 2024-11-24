@@ -4,6 +4,7 @@ import fuzs.hangglider.helper.PlayerGlidingHelper;
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.hangglider.proxy.Proxy;
 import fuzs.puzzleslib.api.event.v1.core.EventResultHolder;
+import fuzs.puzzleslib.api.util.v1.InteractionResultHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +16,7 @@ public class GliderActivationHandler {
     public static EventResultHolder<InteractionResult> onUseItem(Player player, Level level, InteractionHand interactionHand) {
 
         ItemStack itemInHand = player.getItemInHand(interactionHand);
-        if (itemInHand.is(ModRegistry.HANG_GLIDERS_ITEM_TAG)) {
+        if (itemInHand.has(ModRegistry.HANG_GLIDER_DATA_COMPONENT_TYPE.value())) {
 
             if (PlayerGlidingHelper.isWearingElytra(player)) {
 
@@ -25,7 +26,7 @@ public class GliderActivationHandler {
                 boolean gliderDeployed = ModRegistry.GLIDING_CAPABILITY.get(player).isGliderDeployed();
                 ModRegistry.GLIDING_CAPABILITY.get(player).setGliderDeployed(!gliderDeployed);
 
-                return EventResultHolder.interrupt(InteractionResult.sidedSuccess(level.isClientSide));
+                return EventResultHolder.interrupt(InteractionResultHelper.sidedSuccess(level.isClientSide));
             }
 
             return EventResultHolder.interrupt(InteractionResult.FAIL);

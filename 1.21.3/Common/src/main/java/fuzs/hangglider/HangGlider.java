@@ -14,7 +14,6 @@ import fuzs.puzzleslib.api.event.v1.entity.player.PlayerInteractEvents;
 import fuzs.puzzleslib.api.event.v1.entity.player.PlayerTickEvents;
 import fuzs.puzzleslib.api.item.v2.CreativeModeTabConfigurator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +28,7 @@ public class HangGlider implements ModConstructor {
 
     @Override
     public void onConstructMod() {
-        ModRegistry.touch();
+        ModRegistry.bootstrap();
         registerEventHandlers();
     }
 
@@ -41,7 +40,7 @@ public class HangGlider implements ModConstructor {
     @Override
     public void onRegisterCreativeModeTabs(CreativeModeTabContext context) {
         context.registerCreativeModeTab(CreativeModeTabConfigurator.from(MOD_ID,
-                () -> new ItemStack(ModRegistry.HANG_GLIDER_ITEM.value())
+                ModRegistry.HANG_GLIDER_ITEM
         ).displayItems((itemDisplayParameters, output) -> {
             output.accept(ModRegistry.HANG_GLIDER_ITEM.value());
             output.accept(ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value());
@@ -52,7 +51,7 @@ public class HangGlider implements ModConstructor {
 
     @Override
     public ContentRegistrationFlags[] getContentRegistrationFlags() {
-        return new ContentRegistrationFlags[]{ContentRegistrationFlags.COPY_RECIPES};
+        return new ContentRegistrationFlags[]{ContentRegistrationFlags.CRAFTING_TRANSMUTE};
     }
 
     public static ResourceLocation id(String path) {

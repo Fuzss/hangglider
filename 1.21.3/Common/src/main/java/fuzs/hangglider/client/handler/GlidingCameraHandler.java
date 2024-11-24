@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -100,7 +101,7 @@ public class GlidingCameraHandler {
         }
     }
 
-    public static EventResult onRenderHand(ItemInHandRenderer itemInHandRenderer, AbstractClientPlayer player, HumanoidArm humanoidArm, ItemStack itemStack, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLight, float partialTick, float interpolatedPitch, float swingProgress, float equipProgress) {
+    public static EventResult onRenderHand(ItemInHandRenderer itemInHandRenderer, InteractionHand interactionHand, AbstractClientPlayer player, HumanoidArm humanoidArm, ItemStack itemStack, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, float partialTick, float interpolatedPitch, float swingProgress, float equipProgress) {
         return ModRegistry.GLIDING_CAPABILITY.get(player).isGliding() ? EventResult.INTERRUPT : EventResult.PASS;
     }
 }

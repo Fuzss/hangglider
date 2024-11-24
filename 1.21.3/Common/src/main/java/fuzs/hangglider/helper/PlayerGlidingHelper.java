@@ -3,11 +3,12 @@ package fuzs.hangglider.helper;
 import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.config.ServerConfig;
 import fuzs.hangglider.init.ModRegistry;
+import fuzs.hangglider.world.item.component.HangGliderComponent;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 
 public class PlayerGlidingHelper {
@@ -31,18 +32,18 @@ public class PlayerGlidingHelper {
     }
 
     public static boolean isWearingElytra(Player player) {
-        return player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ElytraItem;
+        return player.getItemBySlot(EquipmentSlot.CHEST).has(DataComponents.GLIDER);
     }
 
     /**
      * Check if the itemStack is an unbroken HangGlider.
      *
-     * @param stack - the itemstack to check
+     * @param itemStack - the itemstack to check
      *
      * @return - true if the item is an unbroken glider, false otherwise
      */
-    public static boolean isValidGlider(ItemStack stack) {
-        return stack.is(ModRegistry.HANG_GLIDERS_ITEM_TAG) && (ElytraItem.isFlyEnabled(stack) || !stack.isDamageableItem());
+    public static boolean isValidGlider(ItemStack itemStack) {
+        return itemStack.has(ModRegistry.HANG_GLIDER_DATA_COMPONENT_TYPE.value()) && !itemStack.nextDamageWillBreak();
     }
 
     /**
@@ -72,7 +73,7 @@ public class PlayerGlidingHelper {
     public static EquipmentSlot getGliderHoldingHand(Player player) {
         for (InteractionHand interactionHand : InteractionHand.values()) {
             ItemStack itemInHand = player.getItemInHand(interactionHand);
-            if (itemInHand.is(ModRegistry.HANG_GLIDERS_ITEM_TAG)) {
+            if (itemInHand.has(ModRegistry.HANG_GLIDER_DATA_COMPONENT_TYPE.value())) {
                 return interactionHand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
             }
         }
@@ -81,10 +82,13 @@ public class PlayerGlidingHelper {
     }
 
     public static ServerConfig.GliderConfig getGliderMaterialSettings(ItemStack itemStack) {
-        if (itemStack.is(ModRegistry.REINFORCED_HANG_GLIDERS_ITEM_TAG)) {
-            return HangGlider.CONFIG.get(ServerConfig.class).reinforcedHangGlider;
-        } else if (itemStack.is(ModRegistry.HANG_GLIDERS_ITEM_TAG)) {
-            return HangGlider.CONFIG.get(ServerConfig.class).hangGlider;
+        HangGliderComponent hangGlider = itemStack.get(ModRegistry.HANG_GLIDER_DATA_COMPONENT_TYPE.value());
+        if (hangGlider != null) {
+            if (hangGlider.isReinforced()) {
+                return HangGlider.CONFIG.get(ServerConfig.class).reinforcedHangGlider;
+            } else {
+                return HangGlider.CONFIG.get(ServerConfig.class).hangGlider;
+            }
         } else {
             throw new IllegalArgumentException(itemStack + " is no hang glider");
         }

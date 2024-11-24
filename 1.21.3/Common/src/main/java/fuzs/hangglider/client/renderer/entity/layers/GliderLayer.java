@@ -1,12 +1,13 @@
 package fuzs.hangglider.client.renderer.entity.layers;
 
-import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import fuzs.hangglider.HangGlider;
+import fuzs.hangglider.client.handler.GliderRenderHandler;
 import fuzs.hangglider.client.init.ModClientRegistry;
 import fuzs.hangglider.client.model.GliderModel;
-import fuzs.hangglider.helper.PlayerGlidingHelper;
+import fuzs.hangglider.init.ModRegistry;
+import fuzs.puzzleslib.api.client.util.v1.RenderPropertyKey;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -15,49 +16,46 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.EquipmentModelSet;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Map;
+import java.util.Objects;
 
-public class GliderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
-    private static final ResourceLocation TEXTURE_LOCATION = HangGlider.id("textures/models/glider/hang_glider.png");
-    private static final Map<Item, ResourceLocation> TEXTURE_LOCATION_OVERRIDES = Maps.newLinkedHashMapWithExpectedSize(
-            1);
+public class GliderLayer extends RenderLayer<PlayerRenderState, PlayerModel> {
+    private static final ResourceLocation TEXTURE_LOCATION = getGliderLocation(HangGlider.id("hang_glider"));
 
     private final GliderModel<AbstractClientPlayer> gliderModel;
 
-    public GliderLayer(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderLayerParent, EntityModelSet entityModelSet) {
+    public GliderLayer(RenderLayerParent<PlayerRenderState, PlayerModel> renderLayerParent, EntityModelSet entityModelSet, EquipmentModelSet equipmentModelSet) {
         super(renderLayerParent);
         this.gliderModel = new GliderModel<>(entityModelSet.bakeLayer(ModClientRegistry.GLIDER));
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, PlayerRenderState entityRenderState, float f, float g) {
 
-        ItemStack itemStack = PlayerGlidingHelper.getGliderInHand(player);
+        ItemStack itemStack = RenderPropertyKey.getRenderProperty(entityRenderState,
+                GliderRenderHandler.GLIDER_IN_HAND_KEY);
         if (!itemStack.isEmpty()) {
 
             poseStack.pushPose();
-
-            this.getParentModel().copyPropertiesTo(this.gliderModel);
-
-            ResourceLocation resourceLocation = TEXTURE_LOCATION_OVERRIDES.getOrDefault(itemStack.getItem(),
-                    TEXTURE_LOCATION
-            );
-            VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer,
+            ResourceLocation resourceLocation = itemStack.get(ModRegistry.HANG_GLIDER_DATA_COMPONENT_TYPE.value())
+                    .textureLocation()
+                    .map(GliderLayer::getGliderLocation)
+                    .orElse(TEXTURE_LOCATION);
+            VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(multiBufferSource,
                     RenderType.armorCutoutNoCull(resourceLocation),
-                    itemStack.hasFoil()
-            );
+                    itemStack.hasFoil());
             this.gliderModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-
             poseStack.popPose();
         }
     }
 
-    public static void registerGliderTexture(Item item, ResourceLocation resourceLocation) {
-        TEXTURE_LOCATION_OVERRIDES.putIfAbsent(item, resourceLocation);
+    static ResourceLocation getGliderLocation(ResourceLocation resourceLocation) {
+        Objects.requireNonNull(resourceLocation, "resource location is null");
+        return resourceLocation.withPath(s -> "textures/models/glider/" + s + ".png");
     }
 }
