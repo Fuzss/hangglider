@@ -5,7 +5,6 @@ import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.data.v2.AbstractRecipeProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
 import fuzs.puzzleslib.api.data.v2.recipes.TransmuteShapedRecipeBuilder;
-import fuzs.puzzleslib.impl.item.CustomTransmuteRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
@@ -41,11 +40,12 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 .define('#', ModRegistry.GLIDER_WING_ITEM.value())
                 .define('@', ModRegistry.GLIDER_FRAMEWORK_ITEM.value())
                 .pattern("#@#")
+                .unlockedBy(getHasName(ModRegistry.GLIDER_WING_ITEM.value()),
+                        this.has(ModRegistry.GLIDER_WING_ITEM.value()))
                 .unlockedBy(getHasName(ModRegistry.GLIDER_FRAMEWORK_ITEM.value()),
                         this.has(ModRegistry.GLIDER_FRAMEWORK_ITEM.value()))
                 .save(recipeOutput);
-        RecipeSerializer<?> recipeSerializer = CustomTransmuteRecipe.getModSerializer(HangGlider.MOD_ID,
-                CustomTransmuteRecipe.TRANSMUTE_SHAPED_RECIPE_SERIALIZER_ID);
+        RecipeSerializer<?> recipeSerializer = TransmuteShapedRecipeBuilder.getRecipeSerializer(HangGlider.MOD_ID);
         TransmuteShapedRecipeBuilder.shaped(recipeSerializer,
                         this.items(),
                         RecipeCategory.TOOLS,

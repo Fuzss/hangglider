@@ -18,7 +18,6 @@ public class HangGliderNeoForgeClient {
         DataProviderHelper.registerDataProviders(HangGlider.MOD_ID,
                 ModLanguageProvider::new,
                 ModModelProvider::new,
-                ModSpriteSourceProvider::new
-        );
+                ModSpriteSourceProvider::new);
     }
 }
