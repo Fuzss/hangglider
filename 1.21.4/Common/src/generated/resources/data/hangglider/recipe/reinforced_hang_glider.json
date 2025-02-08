@@ -1,0 +1,16 @@
+{
+  "type": "hangglider:crafting_transmute_shaped",
+  "category": "equipment",
+  "input": "hangglider:hang_glider",
+  "key": {
+    "#": "minecraft:phantom_membrane",
+    "@": "hangglider:hang_glider"
+  },
+  "pattern": [
+    "#@#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hangglider:reinforced_hang_glider"
+  }
+}
