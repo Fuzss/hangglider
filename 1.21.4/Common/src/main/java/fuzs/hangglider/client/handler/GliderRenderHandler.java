@@ -8,6 +8,7 @@ import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.client.renderer.v1.RenderPropertyKey;
 import fuzs.puzzleslib.api.event.v1.core.EventResult;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
@@ -46,6 +47,7 @@ public class GliderRenderHandler {
 
                 playerRenderState.rightHandItem.clear();
                 playerRenderState.leftHandItem.clear();
+                playerRenderState.rightArmPose = playerRenderState.leftArmPose = HumanoidModel.ArmPose.EMPTY;
                 playerRenderState.isCrouching = false;
             }
         }
