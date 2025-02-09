@@ -1,15 +1,15 @@
 package fuzs.hangglider.data.client;
 
-import fuzs.hangglider.HangGlider;
-import fuzs.hangglider.client.HangGliderClient;
+import fuzs.hangglider.client.renderer.item.properties.conditional.GliderDeployed;
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.client.data.v2.AbstractModelProvider;
-import fuzs.puzzleslib.api.client.data.v2.ItemModelProperties;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
-import net.minecraft.data.models.ItemModelGenerators;
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.ModelTemplates;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.properties.conditional.Broken;
+import net.minecraft.world.item.Item;
 
 public class ModModelProvider extends AbstractModelProvider {
 
@@ -18,37 +18,25 @@ public class ModModelProvider extends AbstractModelProvider {
     }
 
     @Override
-    public void addItemModels(ItemModelGenerators builder) {
-        ResourceLocation deployedHangGlider = generateFlatItem(HangGlider.id("deployed_hang_glider"),
-                ModelTemplates.FLAT_ITEM,
-                builder.output
-        );
-        ResourceLocation brokenHangGlider = generateFlatItem(HangGlider.id("broken_hang_glider"),
-                ModelTemplates.FLAT_ITEM,
-                builder.output
-        );
-        ResourceLocation brokenReinforcedHangGlider = generateFlatItem(HangGlider.id("broken_reinforced_hang_glider"),
-                ModelTemplates.FLAT_ITEM,
-                builder.output
-        );
-        builder.generateFlatItem(ModRegistry.GLIDER_WING_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        builder.generateFlatItem(ModRegistry.GLIDER_FRAMEWORK_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        generateFlatItem(ModRegistry.HANG_GLIDER_ITEM.value(),
-                ModelTemplates.FLAT_ITEM,
-                builder.output,
-                createOverridesFactory(deployedHangGlider, brokenHangGlider)
-        );
-        generateFlatItem(ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value(),
-                ModelTemplates.FLAT_ITEM,
-                builder.output,
-                createOverridesFactory(deployedHangGlider, brokenReinforcedHangGlider)
-        );
+    public void addItemModels(ItemModelGenerators itemModelGenerators) {
+        itemModelGenerators.generateFlatItem(ModRegistry.GLIDER_WING_ITEM.value(), ModelTemplates.FLAT_ITEM);
+        itemModelGenerators.generateFlatItem(ModRegistry.GLIDER_FRAMEWORK_ITEM.value(), ModelTemplates.FLAT_ITEM);
+        ItemModel.Unbaked deployedModel = ItemModelUtils.plainModel(itemModelGenerators.createFlatItemModel(ModRegistry.HANG_GLIDER_ITEM.value(),
+                "_deployed",
+                ModelTemplates.FLAT_ITEM));
+        this.generateGlider(ModRegistry.HANG_GLIDER_ITEM.value(), deployedModel, itemModelGenerators);
+        this.generateGlider(ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value(), deployedModel, itemModelGenerators);
     }
 
-    public static ModelTemplate.JsonFactory createOverridesFactory(ResourceLocation deployedLocation, ResourceLocation brokenLocation) {
-        return ItemModelProperties.overridesFactory(ModelTemplates.FLAT_ITEM,
-                ItemModelProperties.singleOverride(deployedLocation, HangGliderClient.ITEM_PROPERTY_DEPLOYED, 1.0F),
-                ItemModelProperties.singleOverride(brokenLocation, HangGliderClient.ITEM_PROPERTY_BROKEN, 1.0F)
-        );
+    public final void generateGlider(Item item, ItemModel.Unbaked deployedModel, ItemModelGenerators itemModelGenerators) {
+        ItemModel.Unbaked itemModel = ItemModelUtils.plainModel(itemModelGenerators.createFlatItemModel(item,
+                ModelTemplates.FLAT_ITEM));
+        ItemModel.Unbaked brokenModel = ItemModelUtils.plainModel(itemModelGenerators.createFlatItemModel(item,
+                "_broken",
+                ModelTemplates.FLAT_ITEM));
+        itemModelGenerators.generateBooleanDispatch(item,
+                new Broken(),
+                brokenModel,
+                ItemModelUtils.conditional(new GliderDeployed(), deployedModel, itemModel));
     }
 }

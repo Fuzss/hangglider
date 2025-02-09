@@ -16,7 +16,7 @@ public class ModItemTagProvider extends AbstractTagProvider<Item> {
 
     @Override
     public void addTags(HolderLookup.Provider provider) {
-        this.add(ItemTags.DURABILITY_ENCHANTABLE).add(ModRegistry.HANG_GLIDER_ITEM.value(),
-                ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value());
+        this.tag(ItemTags.DURABILITY_ENCHANTABLE)
+                .add(ModRegistry.HANG_GLIDER_ITEM.value(), ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value());
     }
 }

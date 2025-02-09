@@ -5,11 +5,10 @@ import com.mojang.math.Axis;
 import fuzs.hangglider.HangGlider;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
 import fuzs.hangglider.init.ModRegistry;
-import fuzs.puzzleslib.api.client.util.v1.RenderPropertyKey;
+import fuzs.puzzleslib.api.client.renderer.v1.RenderPropertyKey;
 import fuzs.puzzleslib.api.event.v1.core.EventResult;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -29,10 +28,9 @@ public class GliderRenderHandler {
 
     private static boolean appliedGlidingRotations;
 
-    public static void onExtractRenderState(Entity entity, EntityRenderState renderState, EntityRenderer<?, ?> entityRenderer, float partialTick) {
+    public static void onExtractRenderState(Entity entity, EntityRenderState renderState, float partialTick) {
 
-        if (entity instanceof Player player && renderState instanceof PlayerRenderState playerRenderState &&
-                entityRenderer instanceof PlayerRenderer playerRenderer) {
+        if (entity instanceof Player player && renderState instanceof PlayerRenderState playerRenderState) {
 
             RenderPropertyKey.setRenderProperty(renderState,
                     GLIDER_IN_HAND_KEY,
@@ -46,7 +44,8 @@ public class GliderRenderHandler {
 
             if (RenderPropertyKey.getRenderProperty(renderState, IS_GLIDING_KEY)) {
 
-                playerRenderState.mainHandState.isEmpty = playerRenderState.offhandState.isEmpty = true;
+                playerRenderState.rightHandItem.clear();
+                playerRenderState.leftHandItem.clear();
                 playerRenderState.isCrouching = false;
             }
         }

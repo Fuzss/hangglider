@@ -10,7 +10,6 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class ModRecipeProvider extends AbstractRecipeProvider {
 
@@ -45,8 +44,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 .unlockedBy(getHasName(ModRegistry.GLIDER_FRAMEWORK_ITEM.value()),
                         this.has(ModRegistry.GLIDER_FRAMEWORK_ITEM.value()))
                 .save(recipeOutput);
-        RecipeSerializer<?> recipeSerializer = TransmuteShapedRecipeBuilder.getRecipeSerializer(HangGlider.MOD_ID);
-        TransmuteShapedRecipeBuilder.shaped(recipeSerializer,
+        TransmuteShapedRecipeBuilder.shaped(TransmuteShapedRecipeBuilder.getRecipeSerializer(HangGlider.MOD_ID),
                         this.items(),
                         RecipeCategory.TOOLS,
                         ModRegistry.REINFORCED_HANG_GLIDER_ITEM.value())

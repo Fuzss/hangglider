@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hangglider:item/broken_hang_glider"
+    "layer0": "hangglider:item/reinforced_hang_glider_broken"
   }
 }
