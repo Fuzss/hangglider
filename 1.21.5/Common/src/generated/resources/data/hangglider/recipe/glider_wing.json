@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": [
+      "minecraft:leather",
+      "minecraft:rabbit_hide"
+    ],
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "  S",
+    " S#",
+    "S##"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hangglider:glider_wing"
+  }
+}

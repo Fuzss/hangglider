@@ -1,0 +1,12 @@
+// 1.21.4	2025-02-09T16:35:54.112602	Model Definitions
+4b198f1390951d75dfac54788be70f89e1c39904 assets/hangglider/items/glider_framework.json
+a4a0a8f1ad7ccf4138299ad7c9a5b6fdb0c50e94 assets/hangglider/items/glider_wing.json
+e2a176ade88a04412aa837be376ac24e793ca341 assets/hangglider/items/hang_glider.json
+ca2cc671f4d5a49c917e46810151e7f5365e4df9 assets/hangglider/items/reinforced_hang_glider.json
+7609677fd903347ebb1fff2b2f9cd86a56b0ad8a assets/hangglider/models/item/glider_framework.json
+6bd623156f0d6de525c3933590e9489cd5d7fffa assets/hangglider/models/item/glider_wing.json
+c8e1fafc60565e86c3cace8bb5ad73bf5f3b90e5 assets/hangglider/models/item/hang_glider.json
+944883cb5e69bd36f9effecb72ad7254aa679ea4 assets/hangglider/models/item/hang_glider_broken.json
+aa6fdebdb1afb12036dadfefe2ac7a15fe06de0c assets/hangglider/models/item/hang_glider_deployed.json
+0f339bc08c42f21e7fc4c39c5660c965d9dc2e02 assets/hangglider/models/item/reinforced_hang_glider.json
+e4aa1e287c4da817d6a61546a278dffee4e9e4ef assets/hangglider/models/item/reinforced_hang_glider_broken.json
