@@ -1,16 +1,17 @@
 package fuzs.hangglider.init;
 
 import fuzs.hangglider.HangGlider;
-import fuzs.hangglider.capability.GlidingCapability;
+import fuzs.hangglider.attachment.Gliding;
 import fuzs.hangglider.world.item.component.HangGliderComponent;
-import fuzs.puzzleslib.api.capability.v3.CapabilityController;
-import fuzs.puzzleslib.api.capability.v3.data.EntityCapabilityKey;
-import fuzs.puzzleslib.api.capability.v3.data.SyncStrategy;
+import fuzs.puzzleslib.api.attachment.v4.DataAttachmentRegistry;
+import fuzs.puzzleslib.api.attachment.v4.DataAttachmentType;
+import fuzs.puzzleslib.api.init.v3.registry.ContentRegistrationHelper;
 import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
-import fuzs.puzzleslib.api.init.v3.registry.TransmuteRecipeHelper;
+import fuzs.puzzleslib.api.network.v4.PlayerSet;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -42,14 +43,13 @@ public class ModRegistry {
     public static final Holder.Reference<CreativeModeTab> CREATIVE_MODE_TAB = REGISTRIES.registerCreativeModeTab(
             HANG_GLIDER_ITEM);
 
-    static final CapabilityController CAPABILITIES = CapabilityController.from(HangGlider.MOD_ID);
-    public static final EntityCapabilityKey<Player, GlidingCapability> GLIDING_CAPABILITY = CAPABILITIES.registerEntityCapability(
-            "gliding",
-            GlidingCapability.class,
-            GlidingCapability::new,
-            Player.class).setSyncStrategy(SyncStrategy.TRACKING);
+    public static final DataAttachmentType<Entity, Gliding> GLIDING_ATTACHMENT_TYPE = DataAttachmentRegistry.<Gliding>entityBuilder()
+            .defaultValue(EntityType.PLAYER, Gliding.EMPTY)
+            .persistent(Gliding.CODEC)
+            .networkSynchronized(Gliding.STREAM_CODEC, PlayerSet::nearEntity)
+            .build(HangGlider.id("gliding"));
 
     public static void bootstrap() {
-        TransmuteRecipeHelper.registerTransmuteRecipeSerializers(REGISTRIES);
+        ContentRegistrationHelper.registerTransmuteRecipeSerializers(REGISTRIES);
     }
 }

@@ -1,5 +1,6 @@
 package fuzs.hangglider.handler;
 
+import fuzs.hangglider.attachment.Gliding;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.hangglider.proxy.Proxy;
@@ -23,8 +24,11 @@ public class GliderActivationHandler {
                 Proxy.INSTANCE.addElytraWidget();
             } else if (PlayerGlidingHelper.isValidGlider(itemInHand)) {
 
-                boolean gliderDeployed = ModRegistry.GLIDING_CAPABILITY.get(player).isGliderDeployed();
-                ModRegistry.GLIDING_CAPABILITY.get(player).setGliderDeployed(!gliderDeployed);
+                if (!level.isClientSide) {
+
+                    Gliding gliding = ModRegistry.GLIDING_ATTACHMENT_TYPE.get(player);
+                    ModRegistry.GLIDING_ATTACHMENT_TYPE.set(player, gliding.withDeployed(!gliding.deployed()));
+                }
 
                 return EventResultHolder.interrupt(InteractionResultHelper.sidedSuccess(level.isClientSide));
             }

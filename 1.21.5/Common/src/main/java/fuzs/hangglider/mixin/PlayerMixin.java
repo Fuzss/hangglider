@@ -21,8 +21,8 @@ abstract class PlayerMixin extends LivingEntity {
 
     @Inject(method = "updatePlayerPose", at = @At("HEAD"), cancellable = true)
     protected void updatePlayerPose(CallbackInfo callback) {
-        if (this.canPlayerFitWithinBlocksAndEntitiesWhen(Pose.SWIMMING) && ModRegistry.GLIDING_CAPABILITY.get(Player.class.cast(
-                this)).isGliding()) {
+        if (this.canPlayerFitWithinBlocksAndEntitiesWhen(Pose.SWIMMING) &&
+                ModRegistry.GLIDING_ATTACHMENT_TYPE.get(this).gliding()) {
             this.setPose(Pose.SPIN_ATTACK);
             callback.cancel();
         }

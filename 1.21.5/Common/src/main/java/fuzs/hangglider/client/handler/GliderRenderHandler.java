@@ -33,17 +33,15 @@ public class GliderRenderHandler {
 
         if (entity instanceof Player player && renderState instanceof PlayerRenderState playerRenderState) {
 
-            RenderPropertyKey.setRenderProperty(renderState,
-                    GLIDER_IN_HAND_KEY,
-                    PlayerGlidingHelper.getGliderInHand(player));
-            RenderPropertyKey.setRenderProperty(renderState,
+            RenderPropertyKey.set(renderState, GLIDER_IN_HAND_KEY, PlayerGlidingHelper.getGliderInHand(player));
+            RenderPropertyKey.set(renderState,
                     IS_GLIDING_KEY,
-                    ModRegistry.GLIDING_CAPABILITY.get(player).isGliding());
-            RenderPropertyKey.setRenderProperty(renderState,
+                    ModRegistry.GLIDING_ATTACHMENT_TYPE.get(player).gliding());
+            RenderPropertyKey.set(renderState,
                     HEAD_ROT_KEY,
                     Mth.rotLerp(partialTick, player.yHeadRotO, player.yHeadRot));
 
-            if (RenderPropertyKey.getRenderProperty(renderState, IS_GLIDING_KEY)) {
+            if (RenderPropertyKey.getOrDefault(renderState, IS_GLIDING_KEY, false)) {
 
                 playerRenderState.rightHandItem.clear();
                 playerRenderState.leftHandItem.clear();
@@ -58,9 +56,9 @@ public class GliderRenderHandler {
         if (renderState instanceof PlayerRenderState playerRenderState &&
                 entityRenderer instanceof PlayerRenderer playerRenderer) {
 
-            if (RenderPropertyKey.getRenderProperty(renderState, IS_GLIDING_KEY)) {
+            if (RenderPropertyKey.getOrDefault(renderState, IS_GLIDING_KEY, false)) {
 
-                float headRot = RenderPropertyKey.getRenderProperty(renderState, HEAD_ROT_KEY);
+                float headRot = RenderPropertyKey.getOrDefault(renderState, HEAD_ROT_KEY, 0.0F);
                 poseStack.pushPose();
                 poseStack.mulPose(Axis.YP.rotationDegrees(-headRot));
                 poseStack.translate(0.0F, playerRenderState.boundingBoxHeight / 2.0F, 0.0F);

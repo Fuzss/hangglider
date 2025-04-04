@@ -14,21 +14,15 @@ import net.minecraft.world.item.ItemStack;
 public class PlayerGlidingHelper {
 
     /**
-     * Check if the player should be gliding.
-     * Checks if the player is alive, and not on the ground or in water.
+     * Check if the player should be gliding. Checks if the player is alive, and not on the ground or in water.
      *
      * @param player - the player to check
-     *
      * @return - true if the conditions are met, false otherwise
      */
     public static boolean isAllowedToGlide(Player player) {
         // delta movement is not synced to remote players, so this is always false for those, but we just update their animation via mixin
-        return !player.onGround() &&
-                !player.isPassenger() &&
-                !player.hasEffect(MobEffects.LEVITATION) &&
-                !player.getAbilities().flying &&
-                !player.isInWater() &&
-                player.getDeltaMovement().y < 0;
+        return !player.onGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION) &&
+                !player.getAbilities().flying && !player.isInWater() && player.getDeltaMovement().y < 0;
     }
 
     public static boolean isWearingElytra(Player player) {
@@ -39,7 +33,6 @@ public class PlayerGlidingHelper {
      * Check if the itemStack is an unbroken HangGlider.
      *
      * @param itemStack - the itemstack to check
-     *
      * @return - true if the item is an unbroken glider, false otherwise
      */
     public static boolean isValidGlider(ItemStack itemStack) {
@@ -50,12 +43,11 @@ public class PlayerGlidingHelper {
      * Loop through player's inventory to get their hang glider.
      *
      * @param player - the player to search
-     *
      * @return - the first glider found (as an itemstack), null otherwise
      */
     public static ItemStack getGliderInHand(Player player) {
 
-        if (ModRegistry.GLIDING_CAPABILITY.get(player).isGliderDeployed()) {
+        if (ModRegistry.GLIDING_ATTACHMENT_TYPE.get(player).deployed()) {
 
             for (InteractionHand interactionHand : InteractionHand.values()) {
 

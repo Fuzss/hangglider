@@ -20,11 +20,9 @@ abstract class RemotePlayerMixin extends AbstractClientPlayer {
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void tick(CallbackInfo callback) {
-
-        // we need this hook here, as the remote player recalculates animations after the main player tick method where this is usually set by us
-
-        if (ModRegistry.GLIDING_CAPABILITY.get(this).isGliding()) {
-
+        // we need this hook here, as the remote player recalculates animations
+        // after the main player tick method where this is usually set by us
+        if (ModRegistry.GLIDING_ATTACHMENT_TYPE.get(this).gliding()) {
             PlayerGlidingHandler.resetClientAnimations(this);
         }
     }

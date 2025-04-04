@@ -29,6 +29,15 @@ public class HangGliderClient implements ClientModConstructor {
 
     @Override
     public void onConstructMod() {
+        registerLoadingHandlers();
+    }
+
+    private static void registerLoadingHandlers() {
+        ExtractRenderStateCallback.EVENT.register(GliderRenderHandler::onExtractRenderState);
+    }
+
+    @Override
+    public void onClientSetup() {
         registerEventHandlers();
     }
 
@@ -40,7 +49,6 @@ public class HangGliderClient implements ClientModConstructor {
         RenderLivingEvents.BEFORE.register(GliderRenderHandler::onBeforeRenderEntity);
         RenderLivingEvents.AFTER.register(GliderRenderHandler::onAfterRenderEntity);
         RenderHandEvents.BOTH.register(GlidingCameraHandler::onRenderHand);
-        ExtractRenderStateCallback.EVENT.register(GliderRenderHandler::onExtractRenderState);
         ComputeCameraAnglesCallback.EVENT.register(GlidingCameraHandler::onComputeCameraRoll);
     }
 

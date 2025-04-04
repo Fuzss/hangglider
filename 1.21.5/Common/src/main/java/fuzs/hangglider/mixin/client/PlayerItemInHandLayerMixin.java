@@ -27,8 +27,7 @@ abstract class PlayerItemInHandLayerMixin<S extends PlayerRenderState, M extends
 
     @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
     protected void renderArmWithItem(S playerRenderState, ItemStackRenderState itemStackRenderState, HumanoidArm humanoidArm, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, CallbackInfo callback) {
-        if (RenderPropertyKey.containsRenderProperty(playerRenderState, GliderRenderHandler.IS_GLIDING_KEY) &&
-                RenderPropertyKey.getRenderProperty(playerRenderState, GliderRenderHandler.IS_GLIDING_KEY)) {
+        if (RenderPropertyKey.getOrDefault(playerRenderState, GliderRenderHandler.IS_GLIDING_KEY, false)) {
             callback.cancel();
         }
     }

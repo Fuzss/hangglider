@@ -13,7 +13,7 @@ public class ModLanguageProvider extends AbstractLanguageProvider {
 
     @Override
     public void addTranslations(TranslationBuilder builder) {
-        builder.addCreativeModeTab(HangGlider.MOD_ID, HangGlider.MOD_NAME);
+        builder.add(ModRegistry.CREATIVE_MODE_TAB.value(), HangGlider.MOD_NAME);
         builder.add(ModRegistry.GLIDER_WING_ITEM.value(), "Glider Wing");
         builder.add(ModRegistry.GLIDER_FRAMEWORK_ITEM.value(), "Glider Framework");
         builder.add(ModRegistry.HANG_GLIDER_ITEM.value(), "Hang Glider");

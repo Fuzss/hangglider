@@ -43,7 +43,7 @@ public class GlidingCameraHandler {
 
     private static void setThirdPersonGliding(Player player, Options options) {
 
-        if (ModRegistry.GLIDING_CAPABILITY.get(player).isGliding()) {
+        if (ModRegistry.GLIDING_ATTACHMENT_TYPE.get(player).gliding()) {
 
             if (oldCameraType == null) {
 
@@ -66,7 +66,7 @@ public class GlidingCameraHandler {
 
     private static void updateGlidingRotation(Player player) {
 
-        if (ModRegistry.GLIDING_CAPABILITY.get(player).isGliding()) {
+        if (ModRegistry.GLIDING_ATTACHMENT_TYPE.get(player).gliding()) {
 
             // code from PlayerRenderer#applyRotations which is used there for rotating player model while flying
             Vec3 vector3d = player.getViewVector(1.0F);
@@ -79,9 +79,11 @@ public class GlidingCameraHandler {
                 double d3 = vector3d1.x * vector3d.z - vector3d1.z * vector3d.x;
                 // fix Math#acos returning NaN when d2 > 1.0
                 float rotationDelta = (float) (Math.signum(d3) * Math.acos(Math.min(d2, 1.0)));
-                rotationDelta *= Mth.RAD_TO_DEG * 0.4F * (float) HangGlider.CONFIG.get(ClientConfig.class).glidingTiltAmount;
+                rotationDelta *=
+                        Mth.RAD_TO_DEG * 0.4F * (float) HangGlider.CONFIG.get(ClientConfig.class).glidingTiltAmount;
                 gliderRotationOld = gliderRotation;
-                gliderRotation += (rotationDelta - gliderRotation) * (float) HangGlider.CONFIG.get(ClientConfig.class).glidingTiltSpeed;
+                gliderRotation += (rotationDelta - gliderRotation) *
+                        (float) HangGlider.CONFIG.get(ClientConfig.class).glidingTiltSpeed;
             }
 
         } else {
@@ -102,6 +104,6 @@ public class GlidingCameraHandler {
     }
 
     public static EventResult onRenderHand(ItemInHandRenderer itemInHandRenderer, InteractionHand interactionHand, AbstractClientPlayer player, HumanoidArm humanoidArm, ItemStack itemStack, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, float partialTick, float interpolatedPitch, float swingProgress, float equipProgress) {
-        return ModRegistry.GLIDING_CAPABILITY.get(player).isGliding() ? EventResult.INTERRUPT : EventResult.PASS;
+        return ModRegistry.GLIDING_ATTACHMENT_TYPE.get(player).gliding() ? EventResult.INTERRUPT : EventResult.PASS;
     }
 }

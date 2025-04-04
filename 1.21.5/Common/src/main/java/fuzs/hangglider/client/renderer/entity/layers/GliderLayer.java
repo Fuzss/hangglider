@@ -39,8 +39,9 @@ public class GliderLayer extends RenderLayer<PlayerRenderState, PlayerModel> {
     @Override
     public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, PlayerRenderState entityRenderState, float f, float g) {
 
-        ItemStack itemStack = RenderPropertyKey.getRenderProperty(entityRenderState,
-                GliderRenderHandler.GLIDER_IN_HAND_KEY);
+        ItemStack itemStack = RenderPropertyKey.getOrDefault(entityRenderState,
+                GliderRenderHandler.GLIDER_IN_HAND_KEY,
+                ItemStack.EMPTY);
         if (!itemStack.isEmpty()) {
 
             poseStack.pushPose();

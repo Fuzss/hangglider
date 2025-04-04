@@ -26,11 +26,15 @@ public class HangGlider implements ModConstructor {
     @Override
     public void onConstructMod() {
         ModRegistry.bootstrap();
+    }
+
+    @Override
+    public void onCommonSetup() {
         registerEventHandlers();
     }
 
     private static void registerEventHandlers() {
-        PlayerTickEvents.END.register(PlayerGlidingHandler::onPlayerTick$End);
+        PlayerTickEvents.END.register(PlayerGlidingHandler::onEndPlayerTick);
         PlayerInteractEvents.USE_ITEM.register(GliderActivationHandler::onUseItem);
     }
 

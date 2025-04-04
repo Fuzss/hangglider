@@ -1,6 +1,7 @@
 package fuzs.hangglider.handler;
 
 import fuzs.hangglider.HangGlider;
+import fuzs.hangglider.attachment.Gliding;
 import fuzs.hangglider.config.ServerConfig;
 import fuzs.hangglider.helper.PlayerGlidingHelper;
 import fuzs.hangglider.init.ModRegistry;
@@ -16,35 +17,41 @@ import java.util.Objects;
 
 public class PlayerGlidingHandler {
 
-    public static void onPlayerTick$End(Player player) {
+    public static void onEndPlayerTick(Player player) {
 
+        Gliding gliding = ModRegistry.GLIDING_ATTACHMENT_TYPE.get(player);
         ItemStack itemStack = PlayerGlidingHelper.getGliderInHand(player);
         if (!itemStack.isEmpty() && !PlayerGlidingHelper.isWearingElytra(player)) {
 
             if (PlayerGlidingHelper.isAllowedToGlide(player)) {
 
-                ModRegistry.GLIDING_CAPABILITY.get(player).setGliding(true);
+                gliding = gliding.withGliding(true);
                 ServerConfig.GliderConfig config = PlayerGlidingHelper.getGliderMaterialSettings(itemStack);
-
                 handleGlidingMovement(player, itemStack, config);
 
                 if (!player.level().isClientSide) {
 
                     handleGliderDurability(player, itemStack, config);
-                    ((ServerGamePacketListenerImplAccessor) ((ServerPlayer) player).connection).hangglider$setAboveGroundTickCount(0);
-                    ((ServerGamePacketListenerImplAccessor) ((ServerPlayer) player).connection).hangglider$setAboveGroundVehicleTickCount(0);
+                    ((ServerGamePacketListenerImplAccessor) ((ServerPlayer) player).connection).hangglider$setAboveGroundTickCount(
+                            0);
+                    ((ServerGamePacketListenerImplAccessor) ((ServerPlayer) player).connection).hangglider$setAboveGroundVehicleTickCount(
+                            0);
                 }
 
                 resetClientAnimations(player);
+            } else {
 
-                return;
+                gliding = gliding.withGliding(false);
             }
         } else {
 
-            ModRegistry.GLIDING_CAPABILITY.get(player).setGliderDeployed(false);
+            gliding = Gliding.EMPTY;
         }
 
-        ModRegistry.GLIDING_CAPABILITY.get(player).setGliding(false);
+        if (!player.level().isClientSide) {
+
+            ModRegistry.GLIDING_ATTACHMENT_TYPE.set(player, gliding);
+        }
     }
 
     public static void resetClientAnimations(Player player) {
@@ -93,7 +100,8 @@ public class PlayerGlidingHandler {
 
     private static void handleGliderDurability(Player player, ItemStack itemStack, ServerConfig.GliderConfig gliderMaterialSettings) {
 
-        if (gliderMaterialSettings.consumeDurability && player.getRandom().nextInt(gliderMaterialSettings.durabilityUseInterval) == 0) {
+        if (gliderMaterialSettings.consumeDurability &&
+                player.getRandom().nextInt(gliderMaterialSettings.durabilityUseInterval) == 0) {
 
             EquipmentSlot equipmentSlot = PlayerGlidingHelper.getGliderHoldingHand(player);
             Objects.requireNonNull(equipmentSlot, "equipment slot is null");
