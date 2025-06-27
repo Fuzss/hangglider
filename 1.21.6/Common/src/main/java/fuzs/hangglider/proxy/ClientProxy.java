@@ -6,6 +6,6 @@ public class ClientProxy extends ServerProxy {
 
     @Override
     public void addElytraWidget() {
-        ElytraEquippedHandler.INSTANCE.setActive();
+        ElytraEquippedHandler.activate();
     }
 }
