@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_17",
+  "package": "${modGroup}.mixin",
+  "mixins": [
+    "PlayerMixin",
+    "accessor.ServerGamePacketListenerImplAccessor"
+  ],
+  "client": [
+    "client.PlayerItemInHandLayerMixin",
+    "client.RemotePlayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
