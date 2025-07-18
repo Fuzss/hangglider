@@ -12,18 +12,9 @@ import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
 import fuzs.puzzleslib.api.client.core.v1.context.GuiLayersContext;
 import fuzs.puzzleslib.api.client.core.v1.context.ItemModelsContext;
 import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
-import fuzs.puzzleslib.api.client.core.v1.context.LivingEntityRenderLayersContext;
 import fuzs.puzzleslib.api.client.event.v1.ClientTickEvents;
 import fuzs.puzzleslib.api.client.event.v1.entity.player.ComputeFovModifierCallback;
-import fuzs.puzzleslib.api.client.event.v1.renderer.ComputeCameraAnglesCallback;
-import fuzs.puzzleslib.api.client.event.v1.renderer.ExtractRenderStateCallback;
-import fuzs.puzzleslib.api.client.event.v1.renderer.RenderHandEvents;
-import fuzs.puzzleslib.api.client.event.v1.renderer.RenderLivingEvents;
-import net.minecraft.client.model.PlayerModel;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
-import net.minecraft.world.entity.EntityType;
+import fuzs.puzzleslib.api.client.event.v1.renderer.*;
 
 public class HangGliderClient implements ClientModConstructor {
 
@@ -41,6 +32,7 @@ public class HangGliderClient implements ClientModConstructor {
         RenderLivingEvents.AFTER.register(GliderRenderHandler::onAfterRenderEntity);
         RenderHandEvents.BOTH.register(GlidingCameraHandler::onRenderHand);
         ComputeCameraAnglesCallback.EVENT.register(GlidingCameraHandler::onComputeCameraRoll);
+        AddLivingEntityRenderLayersCallback.EVENT.register(GliderLayer::addLivingEntityRenderLayers);
     }
 
     @Override
@@ -51,14 +43,6 @@ public class HangGliderClient implements ClientModConstructor {
     @Override
     public void onRegisterItemModels(ItemModelsContext context) {
         context.registerConditionalItemModelProperty(HangGlider.id("glider/deployed"), GliderDeployed.MAP_CODEC);
-    }
-
-    @Override
-    public void onRegisterLivingEntityRenderLayers(LivingEntityRenderLayersContext context) {
-        context.registerRenderLayer(EntityType.PLAYER,
-                (RenderLayerParent<PlayerRenderState, PlayerModel> renderLayerParent, EntityRendererProvider.Context context1) -> {
-                    return new GliderLayer(renderLayerParent, context1.getModelSet());
-                });
     }
 
     @Override

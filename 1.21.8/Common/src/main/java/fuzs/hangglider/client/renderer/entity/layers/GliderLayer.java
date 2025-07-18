@@ -9,17 +9,20 @@ import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.client.init.v1.ModelLayerFactory;
 import fuzs.puzzleslib.api.client.renderer.v1.RenderPropertyKey;
 import net.minecraft.client.model.PlayerModel;
-import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Objects;
@@ -31,9 +34,15 @@ public class GliderLayer extends RenderLayer<PlayerRenderState, PlayerModel> {
 
     private final GliderModel<AbstractClientPlayer> gliderModel;
 
-    public GliderLayer(RenderLayerParent<PlayerRenderState, PlayerModel> renderLayerParent, EntityModelSet entityModelSet) {
+    public GliderLayer(RenderLayerParent<PlayerRenderState, PlayerModel> renderLayerParent, EntityRendererProvider.Context context) {
         super(renderLayerParent);
-        this.gliderModel = new GliderModel<>(entityModelSet.bakeLayer(GLIDER));
+        this.gliderModel = new GliderModel<>(context.bakeLayer(GLIDER));
+    }
+
+    public static void addLivingEntityRenderLayers(EntityType<?> entityType, LivingEntityRenderer<?, ?, ?> entityRenderer, EntityRendererProvider.Context context) {
+        if (entityRenderer instanceof PlayerRenderer playerRenderer) {
+            playerRenderer.addLayer(new GliderLayer(playerRenderer, context));
+        }
     }
 
     @Override
