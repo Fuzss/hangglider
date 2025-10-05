@@ -29,7 +29,7 @@ public class PlayerGlidingHandler {
                 ServerConfig.GliderConfig config = PlayerGlidingHelper.getGliderMaterialSettings(itemStack);
                 handleGlidingMovement(player, itemStack, config);
 
-                if (!player.level().isClientSide) {
+                if (!player.level().isClientSide()) {
 
                     handleGliderDurability(player, itemStack, config);
                     ((ServerGamePacketListenerImplAccessor) ((ServerPlayer) player).connection).hangglider$setAboveGroundTickCount(
@@ -48,7 +48,7 @@ public class PlayerGlidingHandler {
             gliding = Gliding.EMPTY;
         }
 
-        if (!player.level().isClientSide) {
+        if (!player.level().isClientSide()) {
 
             ModRegistry.GLIDING_ATTACHMENT_TYPE.set(player, gliding);
         }
@@ -100,8 +100,8 @@ public class PlayerGlidingHandler {
 
     private static void handleGliderDurability(Player player, ItemStack itemStack, ServerConfig.GliderConfig gliderMaterialSettings) {
 
-        if (gliderMaterialSettings.consumeDurability &&
-                player.getRandom().nextInt(gliderMaterialSettings.durabilityUseInterval) == 0) {
+        if (gliderMaterialSettings.consumeDurability
+                && player.getRandom().nextInt(gliderMaterialSettings.durabilityUseInterval) == 0) {
 
             EquipmentSlot equipmentSlot = PlayerGlidingHelper.getGliderHoldingHand(player);
             Objects.requireNonNull(equipmentSlot, "equipment slot is null");

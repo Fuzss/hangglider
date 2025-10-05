@@ -46,14 +46,10 @@ public class PlayerGlidingHelper {
      * @return - the first glider found (as an itemstack), null otherwise
      */
     public static ItemStack getGliderInHand(Player player) {
-
         if (ModRegistry.GLIDING_ATTACHMENT_TYPE.get(player).deployed()) {
-
             for (InteractionHand interactionHand : InteractionHand.values()) {
-
                 ItemStack itemInHand = player.getItemInHand(interactionHand);
                 if (isValidGlider(itemInHand)) {
-
                     return itemInHand;
                 }
             }

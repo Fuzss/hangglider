@@ -1,4 +1,4 @@
-package fuzs.hangglider.data;
+package fuzs.hangglider.data.tags;
 
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
