@@ -1,0 +1,22 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:condition",
+      "on_false": {
+        "type": "minecraft:model",
+        "model": "hangglider:item/hang_glider"
+      },
+      "on_true": {
+        "type": "minecraft:model",
+        "model": "hangglider:item/hang_glider_deployed"
+      },
+      "property": "hangglider:glider/deployed"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "hangglider:item/hang_glider_broken"
+    },
+    "property": "minecraft:broken"
+  }
+}
