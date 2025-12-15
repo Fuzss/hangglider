@@ -39,15 +39,15 @@ public class GliderRenderHandler {
                     HEAD_ROT_KEY,
                     Mth.rotLerp(partialTick, player.yHeadRotO, player.yHeadRot));
             if (RenderStateExtraData.getOrDefault(renderState, IS_GLIDING_KEY, false)) {
-                avatarRenderState.rightHandItem.clear();
-                avatarRenderState.leftHandItem.clear();
+                avatarRenderState.rightHandItemState.clear();
+                avatarRenderState.leftHandItemState.clear();
                 avatarRenderState.rightArmPose = avatarRenderState.leftArmPose = HumanoidModel.ArmPose.EMPTY;
                 avatarRenderState.isCrouching = false;
             }
         }
     }
 
-    public static <T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<? super S>> EventResult onBeforeRenderEntity(S entityRenderState, LivingEntityRenderer<T, S, M> entityRenderer, float partialTick, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+    public static <T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<? super S>> EventResult onBeforeSubmitLivingEntity(S entityRenderState, LivingEntityRenderer<T, S, M> entityRenderer, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
         if (entityRenderState instanceof AvatarRenderState avatarRenderState
                 && entityRenderer instanceof AvatarRenderer<?>) {
             if (RenderStateExtraData.getOrDefault(entityRenderState, IS_GLIDING_KEY, false)) {
@@ -67,7 +67,7 @@ public class GliderRenderHandler {
         return EventResult.PASS;
     }
 
-    public static <T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<? super S>> void onAfterRenderEntity(S entityRenderState, LivingEntityRenderer<T, S, M> entityRenderer, float partialTick, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+    public static <T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<? super S>> void onAfterSubmitLivingEntity(S entityRenderState, LivingEntityRenderer<T, S, M> entityRenderer, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
         if (entityRenderState instanceof AvatarRenderState && entityRenderer instanceof AvatarRenderer<?>) {
             if (appliedGlidingRotations) {
                 appliedGlidingRotations = false;

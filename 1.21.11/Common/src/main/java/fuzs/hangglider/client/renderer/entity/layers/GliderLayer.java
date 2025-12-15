@@ -7,10 +7,9 @@ import fuzs.hangglider.client.model.GliderModel;
 import fuzs.hangglider.init.ModRegistry;
 import fuzs.puzzleslib.api.client.init.v1.ModelLayerFactory;
 import fuzs.puzzleslib.api.client.renderer.v1.RenderStateExtraData;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -18,8 +17,9 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 
@@ -28,7 +28,7 @@ import java.util.Objects;
 public class GliderLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
     static final ModelLayerFactory MODEL_LAYERS = ModelLayerFactory.from(HangGlider.MOD_ID);
     public static final ModelLayerLocation GLIDER = MODEL_LAYERS.registerModelLayer("glider");
-    private static final ResourceLocation TEXTURE_LOCATION = getGliderLocation(HangGlider.id("hang_glider"));
+    private static final Identifier TEXTURE_LOCATION = getGliderLocation(HangGlider.id("hang_glider"));
 
     private final GliderModel<AbstractClientPlayer> gliderModel;
 
@@ -49,7 +49,7 @@ public class GliderLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
                 GliderRenderHandler.GLIDER_IN_HAND_KEY,
                 ItemStack.EMPTY);
         if (!itemStack.isEmpty()) {
-            ResourceLocation resourceLocation = itemStack.get(ModRegistry.HANG_GLIDER_DATA_COMPONENT_TYPE.value())
+            Identifier identifier = itemStack.get(ModRegistry.HANG_GLIDER_DATA_COMPONENT_TYPE.value())
                     .textureLocation()
                     .map(GliderLayer::getGliderLocation)
                     .orElse(TEXTURE_LOCATION);
@@ -57,7 +57,7 @@ public class GliderLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
                     .submitModel(this.gliderModel,
                             avatarRenderState,
                             poseStack,
-                            RenderType.armorCutoutNoCull(resourceLocation),
+                            RenderTypes.armorCutoutNoCull(identifier),
                             packedLight,
                             OverlayTexture.NO_OVERLAY,
                             avatarRenderState.outlineColor,
@@ -67,7 +67,7 @@ public class GliderLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
                         .submitModel(this.gliderModel,
                                 avatarRenderState,
                                 poseStack,
-                                RenderType.armorEntityGlint(),
+                                RenderTypes.armorEntityGlint(),
                                 packedLight,
                                 OverlayTexture.NO_OVERLAY,
                                 avatarRenderState.outlineColor,
@@ -76,8 +76,8 @@ public class GliderLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
         }
     }
 
-    private static ResourceLocation getGliderLocation(ResourceLocation resourceLocation) {
-        Objects.requireNonNull(resourceLocation, "resource location is null");
-        return resourceLocation.withPath((String string) -> "textures/models/glider/" + string + ".png");
+    private static Identifier getGliderLocation(Identifier identifier) {
+        Objects.requireNonNull(identifier, "identifier is null");
+        return identifier.withPath((String string) -> "textures/models/glider/" + string + ".png");
     }
 }

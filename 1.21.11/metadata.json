@@ -1,0 +1,62 @@
+{
+    "mod": {
+        "id": "hangglider",
+        "group": "fuzs.hangglider",
+        "name": "Hang Glider",
+        "version": "21.11.0",
+        "authors": [
+            "gr8pefish",
+            "Fuzs"
+        ],
+        "description": "Soar through the skies and explore the world's beauty with your brand-new hang glider!",
+        "license": "MIT"
+    },
+    "dependencies": [
+        {
+            "name": "fabricapi",
+            "type": "required",
+            "platforms": [
+                "fabric"
+            ]
+        },
+        {
+            "name": "forgeconfigapiport",
+            "type": "required",
+            "platforms": [
+                "fabric"
+            ]
+        },
+        {
+            "name": "puzzleslib",
+            "type": "required",
+            "platforms": [
+                "fabric",
+                "neoforge"
+            ]
+        }
+    ],
+    "links": [
+        {
+            "name": "github",
+            "slug": "hangglider"
+        },
+        {
+            "name": "curseforge",
+            "slug": "hang-glider",
+            "id": "852668"
+        },
+        {
+            "name": "modrinth",
+            "slug": "hang-glider",
+            "id": "uHWrqYcS"
+        }
+    ],
+    "environments": {
+        "client": "required",
+        "server": "required"
+    },
+    "platforms": [
+        "fabric",
+        "neoforge"
+    ]
+}

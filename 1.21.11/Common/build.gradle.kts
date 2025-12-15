@@ -9,7 +9,6 @@ dependencies {
 multiloader {
     mixins {
         mixin("PlayerMixin")
-        accessor("ServerGamePacketListenerImplAccessor")
         clientMixin("PlayerItemInHandLayerMixin", "RemotePlayerMixin")
     }
 }

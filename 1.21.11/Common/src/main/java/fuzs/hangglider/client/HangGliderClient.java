@@ -28,8 +28,8 @@ public class HangGliderClient implements ClientModConstructor {
         ComputeFovModifierCallback.EVENT.register(FovModifierHandler::onComputeFovModifier);
         ClientTickEvents.END.register(GlidingCameraHandler::onEndClientTick);
         ClientTickEvents.END.register(ElytraEquippedHandler::onEndClientTick);
-        RenderLivingEvents.BEFORE.register(GliderRenderHandler::onBeforeRenderEntity);
-        RenderLivingEvents.AFTER.register(GliderRenderHandler::onAfterRenderEntity);
+        SubmitLivingEntityEvents.BEFORE.register(GliderRenderHandler::onBeforeSubmitLivingEntity);
+        SubmitLivingEntityEvents.AFTER.register(GliderRenderHandler::onAfterSubmitLivingEntity);
         RenderHandEvents.BOTH.register(GlidingCameraHandler::onRenderHand);
         ComputeCameraAnglesCallback.EVENT.register(GlidingCameraHandler::onComputeCameraRoll);
         AddLivingEntityRenderLayersCallback.EVENT.register(GliderLayer::addLivingEntityRenderLayers);
